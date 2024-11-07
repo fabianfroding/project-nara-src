@@ -1,3 +1,3 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+// Copyright Fabian Fröding 2024. All Right Reserved.
 
 #include "Pawns/NaraNPCCharacter.h"

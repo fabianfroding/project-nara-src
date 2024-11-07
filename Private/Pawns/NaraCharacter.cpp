@@ -1,4 +1,4 @@
-// Copyright Epic Games, Inc. All Rights Reserved.
+// Copyright Fabian Fröding 2024. All Right Reserved.
 
 #include "Pawns/NaraCharacter.h"
 
