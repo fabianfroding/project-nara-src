@@ -1,9 +1,9 @@
 // Copyright Fabian Fröding 2024. All Right Reserved.
 
-#include "Pawns/Components/NaraHealthComponent.h"
+#include "ActorComponents/NaraHealthComponent.h"
 
 #include "AbilitySystemComponent.h"
-#include "GAS/AttributeSets/NaraHealthSet.h"
+#include "GASAttributeSets/NaraHealthSet.h"
 
 UNaraHealthComponent::UNaraHealthComponent()
 {

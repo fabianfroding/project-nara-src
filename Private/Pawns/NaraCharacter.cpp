@@ -4,11 +4,11 @@
 
 #include "AbilitySystemComponent.h"
 #include "ActorComponents/NaraFlashComponent.h"
+#include "ActorComponents/NaraHealthComponent.h"
 #include "Engine/LocalPlayer.h"
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/Controller.h"
-#include "Pawns/Components/NaraHealthComponent.h"
 
 DEFINE_LOG_CATEGORY(LogTemplateCharacter);
 
