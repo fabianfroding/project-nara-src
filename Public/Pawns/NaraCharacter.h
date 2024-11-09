@@ -23,6 +23,9 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	UNaraHealthComponent* HealthComponent;
 
+	UPROPERTY(EditDefaultsOnly)
+	class UNaraFlashComponent* FlashComponent;
+
 	/* GAS Variables */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GAS")
 	UAbilitySystemComponent* AbilitySystemComponent;

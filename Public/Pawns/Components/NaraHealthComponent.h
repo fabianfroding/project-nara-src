@@ -10,8 +10,9 @@
 class UAbilitySystemComponent;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnDie);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnDamaged);
 
-UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
+UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
 class NARA_API UNaraHealthComponent : public UActorComponent
 {
 	GENERATED_BODY()
@@ -31,6 +32,9 @@ protected:
 public:
 	UPROPERTY(BlueprintAssignable)
 	FOnDie OnDie;
+
+	UPROPERTY(BlueprintAssignable)
+	FOnDamaged OnDamaged;
 
 public:
 	UNaraHealthComponent();

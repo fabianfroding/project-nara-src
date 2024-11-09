@@ -29,12 +29,12 @@ void UNaraHealthComponent::TakeDamage(FGameplayEffectSpecHandle GameplayEffectSp
 	{
 		AbilitySystemComponent->ApplyGameplayEffectSpecToSelf(*GameplayEffectSpecHandle.Data.Get());
 
-		//float TrueDamageAmount = HealthBefore - FMath::Clamp(HealthAttributeSet->GetHealth(), 0.f, HealthAttributeSet->GetMaxHealth());
-		//if (TrueDamageAmount > 0.f)
-		//{
+		float TrueDamageAmount = HealthBefore - FMath::Clamp(HealthAttributeSet->GetHealth(), 0.f, HealthAttributeSet->GetMaxHealth());
+		if (TrueDamageAmount > 0.f)
+		{
 			//PlayOnDamagedFeedback();
-			//OnDamaged.Broadcast(TrueDamageAmount, DamageSource);
-		//}
+			OnDamaged.Broadcast();
+		}
 
 		/*if (InvulnerabilityFramesDuration > 0.f)
 		{

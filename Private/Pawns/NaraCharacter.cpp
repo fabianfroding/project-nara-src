@@ -3,6 +3,7 @@
 #include "Pawns/NaraCharacter.h"
 
 #include "AbilitySystemComponent.h"
+#include "ActorComponents/NaraFlashComponent.h"
 #include "Engine/LocalPlayer.h"
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
@@ -35,6 +36,8 @@ ANaraCharacter::ANaraCharacter()
 	HealthComponent = CreateDefaultSubobject<UNaraHealthComponent>(TEXT("HealthComponent"));
 
 	AbilitySystemComponent->OnComponentActivated.AddUniqueDynamic(this, &ANaraCharacter::OnAbilitySystemComponentInitialized);
+
+	FlashComponent = CreateDefaultSubobject<UNaraFlashComponent>(TEXT("FlashComponent"));
 }
 
 void ANaraCharacter::OnAbilitySystemComponentInitialized(UActorComponent* Component, bool bReset)
