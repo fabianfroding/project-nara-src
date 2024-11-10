@@ -10,6 +10,7 @@
 class UCameraComponent;
 class UInputMappingContext;
 class UInputAction;
+class UGameplayAbility;
 class USpringArmComponent;
 struct FInputActionValue;
 
@@ -17,6 +18,15 @@ UCLASS()
 class NARA_API ANaraPlayerCharacter : public ANaraCharacter
 {
 	GENERATED_BODY()
+
+protected:
+	/* GAS Variables */
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "GAS")
+	TArray<TSoftClassPtr<UGameplayAbility>> StartingAbilities;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "GAS")
+	TSoftClassPtr<UGameplayAbility> PlayerBoomerangAbility;
+	/* End GAS Variables */
 
 public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
@@ -44,6 +54,8 @@ public:
 	FORCEINLINE class UCameraComponent* GetFollowCamera() const { return FollowCamera; }
 
 protected:
+	virtual void BeginPlay() override;
+
 	void Move(const FInputActionValue& Value);
 	void Look(const FInputActionValue& Value);
 
