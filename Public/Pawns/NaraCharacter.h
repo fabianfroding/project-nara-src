@@ -29,6 +29,9 @@ protected:
 	/* GAS Variables */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GAS")
 	UAbilitySystemComponent* AbilitySystemComponent;
+
+	UPROPERTY(BlueprintReadOnly, Category = "GAS")
+	const class UNaraMovementSet* MovementAttributeSet;
 	/* End GAS Variables */
 
 public:
@@ -38,9 +41,14 @@ public:
 
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override { return AbilitySystemComponent; }
 
+protected:
+	virtual void BeginPlay() override;
+
 private:
 	UFUNCTION()
 	void OnAbilitySystemComponentInitialized(UActorComponent* Component, bool bReset);
+
+	void InitializeMovementAttributeSet();
 
 };
 

@@ -9,6 +9,7 @@
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/Controller.h"
+#include "GASAttributeSets/NaraMovementSet.h"
 
 DEFINE_LOG_CATEGORY(LogTemplateCharacter);
 
@@ -40,10 +41,36 @@ ANaraCharacter::ANaraCharacter()
 	FlashComponent = CreateDefaultSubobject<UNaraFlashComponent>(TEXT("FlashComponent"));
 }
 
+void ANaraCharacter::BeginPlay()
+{
+	Super::BeginPlay();
+	InitializeMovementAttributeSet();
+}
+
 void ANaraCharacter::OnAbilitySystemComponentInitialized(UActorComponent* Component, bool bReset)
 {
 	UAbilitySystemComponent* ASC = GetAbilitySystemComponent();
 	check(ASC);
 	HealthComponent->InitializeWithAbilitySystem(ASC);
 	AbilitySystemComponent->OnComponentActivated.RemoveDynamic(this, &ANaraCharacter::OnAbilitySystemComponentInitialized);
+}
+
+void ANaraCharacter::InitializeMovementAttributeSet()
+{
+	if (!AbilitySystemComponent)
+	{
+		UE_LOG(LogTemp, Error,
+			TEXT("ANaraCharacter::InitializeMovementAttributeSet: Cannot initialize movement attribute set for owner [%s] with NULL ability system."),
+			*GetNameSafe(Owner));
+		return;
+	}
+
+	MovementAttributeSet = AbilitySystemComponent->GetSet<UNaraMovementSet>();
+	if (!MovementAttributeSet)
+	{
+		UE_LOG(LogTemp, Error,
+			TEXT("ANaraCharacter::InitializeMovementAttributeSet: Cannot movement attribute set for owner [%s] with NULL movement set on the ability system."),
+			*GetNameSafe(Owner));
+		return;
+	}
 }
