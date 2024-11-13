@@ -4,6 +4,7 @@
 
 #include "AbilitySystemComponent.h"
 #include "GASAttributeSets/NaraHealthSet.h"
+#include <Kismet/GameplayStatics.h>
 
 UNaraHealthComponent::UNaraHealthComponent()
 {
@@ -17,8 +18,8 @@ void UNaraHealthComponent::BeginPlay()
 
 void UNaraHealthComponent::TakeDamage(FGameplayEffectSpecHandle GameplayEffectSpecHandle, AActor* DamageSource)
 {
-	//if (IsInvulnerable())
-	//	return;
+	if (IsInvulnerable())
+		return;
 
 	if (!IsAlive())
 		return;
@@ -36,15 +37,8 @@ void UNaraHealthComponent::TakeDamage(FGameplayEffectSpecHandle GameplayEffectSp
 			OnDamaged.Broadcast();
 		}
 
-		/*if (InvulnerabilityFramesDuration > 0.f)
-		{
-			UWorld* World = GetWorld();
-			if (IsValid(World))
-			{
-				SetInvulnerability(InvulnerabilityFramesKey, true);
-				World->GetTimerManager().SetTimer(InvulnerabilityFramesTimer, this, &UNHealthComponent::ResetInvulnerabilityFrames, InvulnerabilityFramesDuration, false);
-			}
-		}*/
+		if (InvincibilityFramesDuration > 0.f)
+			InvincibilityFramesTime = UGameplayStatics::GetTimeSeconds(this);
 
 		HandleDeath();
 	}
@@ -77,6 +71,14 @@ void UNaraHealthComponent::InitializeWithAbilitySystem(UAbilitySystemComponent* 
 bool UNaraHealthComponent::IsAlive() const
 {
 	return HealthAttributeSet->GetHealth() > 0.f;
+}
+
+bool UNaraHealthComponent::IsInvulnerable()
+{
+	if (InvincibilityFramesDuration > 0.f && UGameplayStatics::GetTimeSeconds(this) < InvincibilityFramesTime + InvincibilityFramesDuration)
+		return true;
+
+	return false;
 }
 
 void UNaraHealthComponent::HandleDeath()
