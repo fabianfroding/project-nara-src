@@ -1,8 +1,8 @@
 // Copyright Fabian Fröding 2024. All Right Reserved.
 
-#include "Pawns/NaraNPCCharacter.h"
+#include "Characters/NaraEnemyCharacter.h"
 
-void ANaraNPCCharacter::BeginPlay()
+void ANaraEnemyCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 }

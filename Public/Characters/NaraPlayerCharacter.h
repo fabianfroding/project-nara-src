@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Pawns/NaraCharacter.h"
+#include "Characters/NaraCharacter.h"
 
 #include "NaraPlayerCharacter.generated.h"
 

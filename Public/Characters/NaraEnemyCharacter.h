@@ -3,9 +3,9 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Pawns/NaraCharacter.h"
+#include "Characters/NaraCharacter.h"
 
-#include "NaraNPCCharacter.generated.h"
+#include "NaraEnemyCharacter.generated.h"
 
 UENUM(BlueprintType)
 enum class E_NaraAIState : uint8
@@ -16,7 +16,7 @@ enum class E_NaraAIState : uint8
 };
 
 UCLASS()
-class NARA_API ANaraNPCCharacter : public ANaraCharacter
+class NARA_API ANaraEnemyCharacter : public ANaraCharacter
 {
 	GENERATED_BODY()
 

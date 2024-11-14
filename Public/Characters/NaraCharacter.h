@@ -3,6 +3,7 @@
 #pragma once
 
 #include "AbilitySystemInterface.h"
+#include "Characters/NaraCharacterBase.h"
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "Logging/LogMacros.h"
@@ -15,7 +16,7 @@ class UNaraHealthComponent;
 DECLARE_LOG_CATEGORY_EXTERN(LogTemplateCharacter, Log, All);
 
 UCLASS(config=Game)
-class ANaraCharacter : public ACharacter, public IAbilitySystemInterface
+class ANaraCharacter : public ANaraCharacterBase, public IAbilitySystemInterface
 {
 	GENERATED_BODY()
 

@@ -1,6 +1,6 @@
 // Copyright Fabian Fröding 2024. All Right Reserved.
 
-#include "Pawns/NaraCharacter.h"
+#include "Characters/NaraCharacter.h"
 
 #include "AbilitySystemComponent.h"
 #include "ActorComponents/NaraFlashComponent.h"

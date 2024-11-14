@@ -2,7 +2,7 @@
 
 #include "Core/NaraGameMode.h"
 
-#include "Pawns/NaraCharacter.h"
+#include "Characters/NaraCharacter.h"
 #include "UObject/ConstructorHelpers.h"
 
 ANaraGameMode::ANaraGameMode()
