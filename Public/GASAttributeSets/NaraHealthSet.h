@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "AbilitySystemComponent.h"
 #include "AttributeSet.h"
+#include "GASAttributeSets/NaraAttributeSet.h"
 
 #include "NaraHealthSet.generated.h"
 
@@ -15,12 +16,15 @@
 	GAMEPLAYATTRIBUTE_VALUE_INITTER(PropertyName)
 
 UCLASS()
-class NARA_API UNaraHealthSet : public UAttributeSet
+class NARA_API UNaraHealthSet : public UNaraAttributeSet
 {
 	GENERATED_BODY()
 
-public:
+private:
+	float MaxHealthBeforeAttributeChange;
+	float HealthBeforeAttributeChange;
 
+public:
 	UPROPERTY(BlueprintReadOnly)
 	FGameplayAttributeData Health;
 	ATTRIBUTE_ACCESSORS(UNaraHealthSet, Health);
@@ -28,5 +32,12 @@ public:
 	UPROPERTY(BlueprintReadOnly)
 	FGameplayAttributeData MaxHealth;
 	ATTRIBUTE_ACCESSORS(UNaraHealthSet, MaxHealth);
+
+	mutable FNaraAttributeEvent OnHealthChanged;
+	mutable FNaraAttributeEvent OnMaxHealthChanged;
+
+protected:
+	virtual void PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue) override;
+	virtual void PostAttributeChange(const FGameplayAttribute& Attribute, float OldValue, float NewValue) override;
 	
 };
