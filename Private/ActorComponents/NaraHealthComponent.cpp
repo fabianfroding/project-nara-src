@@ -9,11 +9,7 @@
 UNaraHealthComponent::UNaraHealthComponent()
 {
 	PrimaryComponentTick.bCanEverTick = false;
-}
-
-void UNaraHealthComponent::BeginPlay()
-{
-	Super::BeginPlay();
+	HealthAttributeSet = CreateDefaultSubobject<UNaraHealthSet>("HealthAttributeSet");
 }
 
 void UNaraHealthComponent::TakeDamage(FGameplayEffectSpecHandle GameplayEffectSpecHandle, AActor* DamageSource)
@@ -24,11 +20,15 @@ void UNaraHealthComponent::TakeDamage(FGameplayEffectSpecHandle GameplayEffectSp
 	if (!IsAlive())
 		return;
 
+	UAbilitySystemComponent* OwningASC = HealthAttributeSet->GetOwningAbilitySystemComponent();
+	if (OwningASC == nullptr)
+		return;
+
 	const float HealthBefore = HealthAttributeSet->GetHealth();
 
 	if (GameplayEffectSpecHandle.IsValid())
 	{
-		AbilitySystemComponent->ApplyGameplayEffectSpecToSelf(*GameplayEffectSpecHandle.Data.Get());
+		OwningASC->ApplyGameplayEffectSpecToSelf(*GameplayEffectSpecHandle.Data.Get());
 
 		float TrueDamageAmount = HealthBefore - FMath::Clamp(HealthAttributeSet->GetHealth(), 0.f, HealthAttributeSet->GetMaxHealth());
 		if (TrueDamageAmount > 0.f)
@@ -41,30 +41,6 @@ void UNaraHealthComponent::TakeDamage(FGameplayEffectSpecHandle GameplayEffectSp
 			InvincibilityFramesTime = UGameplayStatics::GetTimeSeconds(this);
 
 		HandleDeath();
-	}
-}
-
-void UNaraHealthComponent::InitializeWithAbilitySystem(UAbilitySystemComponent* InASC)
-{
-	AActor* Owner = GetOwner();
-	check(Owner);
-
-	AbilitySystemComponent = InASC;
-	if (!AbilitySystemComponent)
-	{
-		UE_LOG(LogTemp, Error,
-			TEXT("UNaraHealthComponent::InitializeWithAbilitySystem: Cannot initialize health component for owner [%s] with NULL ability system."),
-			*GetNameSafe(Owner));
-		return;
-	}
-
-	HealthAttributeSet = AbilitySystemComponent->GetSet<UNaraHealthSet>();
-	if (!HealthAttributeSet)
-	{
-		UE_LOG(LogTemp, Error, 
-			TEXT("UNaraHealthComponent::InitializeWithAbilitySystem: Cannot initialize health component for owner [%s] with NULL health set on the ability system."), 
-			*GetNameSafe(Owner));
-		return;
 	}
 }
 

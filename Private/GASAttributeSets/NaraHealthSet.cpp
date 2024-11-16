@@ -2,6 +2,12 @@
 
 #include "GASAttributeSets/NaraHealthSet.h"
 
+UNaraHealthSet::UNaraHealthSet()
+{
+	InitMaxHealth(3.f);
+	InitHealth(3.f);
+}
+
 void UNaraHealthSet::PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue)
 {
 	Super::PreAttributeChange(Attribute, NewValue);

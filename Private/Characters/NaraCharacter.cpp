@@ -33,44 +33,7 @@ ANaraCharacter::ANaraCharacter()
 	// Note: The skeletal mesh and anim blueprint references on the Mesh component (inherited from Character) 
 	// are set in the derived blueprint asset named ThirdPersonCharacter (to avoid direct content references in C++)
 
-	AbilitySystemComponent = CreateDefaultSubobject<UAbilitySystemComponent>(TEXT("AbilitySystemComponent"));
 	HealthComponent = CreateDefaultSubobject<UNaraHealthComponent>(TEXT("HealthComponent"));
-
-	AbilitySystemComponent->OnComponentActivated.AddUniqueDynamic(this, &ANaraCharacter::OnAbilitySystemComponentInitialized);
-
 	FlashComponent = CreateDefaultSubobject<UNaraFlashComponent>(TEXT("FlashComponent"));
-}
-
-void ANaraCharacter::BeginPlay()
-{
-	Super::BeginPlay();
-	InitializeMovementAttributeSet();
-}
-
-void ANaraCharacter::OnAbilitySystemComponentInitialized(UActorComponent* Component, bool bReset)
-{
-	UAbilitySystemComponent* ASC = GetAbilitySystemComponent();
-	check(ASC);
-	HealthComponent->InitializeWithAbilitySystem(ASC);
-	AbilitySystemComponent->OnComponentActivated.RemoveDynamic(this, &ANaraCharacter::OnAbilitySystemComponentInitialized);
-}
-
-void ANaraCharacter::InitializeMovementAttributeSet()
-{
-	if (!AbilitySystemComponent)
-	{
-		UE_LOG(LogTemp, Error,
-			TEXT("ANaraCharacter::InitializeMovementAttributeSet: Cannot initialize movement attribute set for owner [%s] with NULL ability system."),
-			*GetNameSafe(Owner));
-		return;
-	}
-
-	MovementAttributeSet = AbilitySystemComponent->GetSet<UNaraMovementSet>();
-	if (!MovementAttributeSet)
-	{
-		UE_LOG(LogTemp, Error,
-			TEXT("ANaraCharacter::InitializeMovementAttributeSet: Cannot movement attribute set for owner [%s] with NULL movement set on the ability system."),
-			*GetNameSafe(Owner));
-		return;
-	}
+	MovementAttributeSet = CreateDefaultSubobject<UNaraMovementSet>("MovementAttributeSet");
 }

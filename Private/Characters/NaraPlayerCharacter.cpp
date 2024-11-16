@@ -8,6 +8,7 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Kismet/KismetSystemLibrary.h"
+#include "Player/NaraPlayerState.h"
 
 ANaraPlayerCharacter::ANaraPlayerCharacter()
 {
@@ -36,6 +37,12 @@ ANaraPlayerCharacter::ANaraPlayerCharacter()
 void ANaraPlayerCharacter::BeginPlay()
 {
 	Super::BeginPlay();
+
+	ANaraPlayerState* NaraPlayerState = GetPlayerState<ANaraPlayerState>();
+	check(NaraPlayerState);
+	NaraPlayerState->GetAbilitySystemComponent()->InitAbilityActorInfo(NaraPlayerState, this);
+	AbilitySystemComponent = NaraPlayerState->GetAbilitySystemComponent();
+	AttributeSet = NaraPlayerState->GetAttributeSet();
 
 	for (TSoftClassPtr<UGameplayAbility> SoftStartingAbility : StartingAbilities)
 	{

@@ -31,6 +31,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TArray<FVector> PatrolLocations;
 
+public:
+	ANaraEnemyCharacter();
+
 protected:
 	virtual void BeginPlay() override;
 	
