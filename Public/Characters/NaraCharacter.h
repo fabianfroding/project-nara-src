@@ -33,5 +33,8 @@ protected:
 public:
 	ANaraCharacter();
 
+protected:
+	virtual void BeginPlay() override;
+
 };
 

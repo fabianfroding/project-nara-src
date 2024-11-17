@@ -27,6 +27,7 @@ void UNaraHealthSet::PostAttributeChange(const FGameplayAttribute& Attribute, fl
 
 	if (GetHealth() != HealthBeforeAttributeChange)
 	{
+		UE_LOG(LogTemp, Display, TEXT("UNaraHealthSet::PostAttributeChange: OnHealthChanged.Broadcast"));
 		OnHealthChanged.Broadcast(nullptr, nullptr, HealthBeforeAttributeChange, GetHealth());
 	}
 }
