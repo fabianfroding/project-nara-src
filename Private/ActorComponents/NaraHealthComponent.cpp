@@ -17,44 +17,7 @@ UNaraHealthComponent::UNaraHealthComponent()
 
 void UNaraHealthComponent::TakeDamage(FGameplayEffectSpecHandle GameplayEffectSpecHandle, AActor* DamageSource)
 {
-	if (IsInvulnerable())
-		return;
-
-	if (!IsAlive())
-		return;
-
-	UAbilitySystemComponent* OwningASC = HealthSet->GetOwningAbilitySystemComponent();
-	if (OwningASC == nullptr)
-	{
-		UE_LOG(LogTemp, Warning, TEXT("%s no ASC!!!"), *GetOwner()->GetFName().ToString());
-		return;
-	}
-
-	const float HealthBefore = HealthSet->GetHealth();
-	UE_LOG(LogTemp, Warning, TEXT("UNaraHealthComponent::TakeDamage: HealthBefore: %f"), HealthBefore);
-
-	if (GameplayEffectSpecHandle.IsValid())
-	{
-		UE_LOG(LogTemp, Warning, TEXT("%s Valid GE!!!"), *GetOwner()->GetFName().ToString());
-		OwningASC->ApplyGameplayEffectSpecToSelf(*GameplayEffectSpecHandle.Data.Get());
-
-		UE_LOG(LogTemp, Warning, TEXT("UNaraHealthComponent::TakeDamage: Health after apply GE: %f"), HealthSet->GetHealth());
-
-		const float TrueDamageAmount = HealthBefore - FMath::Clamp(HealthSet->GetHealth(), 0.f, HealthSet->GetMaxHealth());
-
-		UE_LOG(LogTemp, Warning, TEXT("UNaraHealthComponent::TakeDamage: Tru dmg amt: %f"), TrueDamageAmount);
-		if (TrueDamageAmount > 0.f)
-		{
-			UE_LOG(LogTemp, Warning, TEXT("%s Broadcast!!!"), *GetOwner()->GetFName().ToString());
-			//PlayOnDamagedFeedback();
-			OnDamaged.Broadcast();
-		}
-
-		if (InvincibilityFramesDuration > 0.f)
-			InvincibilityFramesTime = UGameplayStatics::GetTimeSeconds(this);
-
-		HandleDeath();
-	}
+	
 }
 
 bool UNaraHealthComponent::IsAlive() const
@@ -72,7 +35,27 @@ bool UNaraHealthComponent::IsInvulnerable()
 
 void UNaraHealthComponent::HandleHealthChanged(AActor* DamageInstigator, AActor* DamageCauser, float OldValue, float NewValue)
 {
+	// TODO: These should be handled by GAS tags.
+	//if (IsInvulnerable())
+		//return;
+	//if (!IsAlive())
+		//return;
+
+	const float TrueDamageAmount = OldValue - FMath::Clamp(NewValue, 0.f, HealthSet->GetMaxHealth());
+	if (TrueDamageAmount > 0.f)
+	{
+		//PlayOnDamagedFeedback();
+		UE_LOG(LogTemp, Display, TEXT("UNaraHealthComponent::HandleHealthChanged: Broadcast OnDamaged!"));
+		OnDamaged.Broadcast();
+	}
+
+	// TODO: This no longer works after GAS implementation. Should arguably be handled by a GAS duration effect that apply a tag.
+	if (InvincibilityFramesDuration > 0.f)
+		InvincibilityFramesTime = UGameplayStatics::GetTimeSeconds(this);
+
 	OnHealthChanged.Broadcast(this, OldValue, NewValue);
+
+	HandleDeath();
 }
 
 void UNaraHealthComponent::HandleMaxHealthChanged(AActor* DamageInstigator, AActor* DamageCauser, float OldValue, float NewValue)

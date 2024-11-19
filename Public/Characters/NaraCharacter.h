@@ -25,11 +25,6 @@ protected:
 	UPROPERTY(EditDefaultsOnly)
 	class UNaraFlashComponent* FlashComponent;
 
-	/* GAS Variables */
-	UPROPERTY(BlueprintReadOnly, Category = "GAS")
-	const class UNaraMovementSet* MovementAttributeSet;
-	/* End GAS Variables */
-
 public:
 	ANaraCharacter();
 

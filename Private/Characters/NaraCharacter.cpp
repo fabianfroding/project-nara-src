@@ -35,7 +35,6 @@ ANaraCharacter::ANaraCharacter()
 
 	HealthComponent = CreateDefaultSubobject<UNaraHealthComponent>(TEXT("HealthComponent"));
 	FlashComponent = CreateDefaultSubobject<UNaraFlashComponent>(TEXT("FlashComponent"));
-	MovementAttributeSet = CreateDefaultSubobject<UNaraMovementSet>("MovementAttributeSet");
 }
 
 void ANaraCharacter::BeginPlay()
