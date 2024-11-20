@@ -12,6 +12,9 @@ void UNaraHealthSet::PreAttributeChange(const FGameplayAttribute& Attribute, flo
 {
 	Super::PreAttributeChange(Attribute, NewValue);
 
+	// NOTE: Not the best place to do clamping since other calculations are done efter PreAttributeChange, which can still modify the new value.
+	NewValue = FMath::Clamp(NewValue, 0.f, GetMaxHealth());
+
 	HealthBeforeAttributeChange = GetHealth();
 	MaxHealthBeforeAttributeChange = GetMaxHealth();
 }
