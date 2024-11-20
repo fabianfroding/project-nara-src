@@ -34,3 +34,17 @@ void UNaraHealthSet::PostAttributeChange(const FGameplayAttribute& Attribute, fl
 		OnHealthChanged.Broadcast(nullptr, nullptr, HealthBeforeAttributeChange, GetHealth());
 	}
 }
+
+void UNaraHealthSet::PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data)
+{
+	Super::PostGameplayEffectExecute(Data);
+
+	/*if (Data.EvaluatedData.Attribute == GetHealthAttribute())
+	{
+		UE_LOG(LogTemp, Display, TEXT("UNaraHealthSet::PostGameplayEffectExecute: Health from GetHealth: %f"), GetHealth());
+		UE_LOG(LogTemp, Display, TEXT("UNaraHealthSet::PostGameplayEffectExecute: Magnitude: %f"), Data.EvaluatedData.Magnitude);
+	}*/
+
+	FEffectProperties Props;
+	SetEffectProperties(Data, Props);
+}
