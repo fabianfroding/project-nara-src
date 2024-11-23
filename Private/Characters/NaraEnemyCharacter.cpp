@@ -14,5 +14,11 @@ ANaraEnemyCharacter::ANaraEnemyCharacter()
 void ANaraEnemyCharacter::BeginPlay()
 {
 	Super::BeginPlay();
+	InitAbilityActorInfo();
+}
+
+void ANaraEnemyCharacter::InitAbilityActorInfo()
+{
 	AbilitySystemComponent->InitAbilityActorInfo(this, this);
+	Cast<UNaraAbilitySystemComponent>(AbilitySystemComponent)->AbilityActorInfoSet();
 }

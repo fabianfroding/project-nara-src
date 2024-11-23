@@ -7,6 +7,7 @@
 #include "Core/NaraAssetManager.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
+#include "GAS/NaraAbilitySystemComponent.h"
 #include "Kismet/KismetSystemLibrary.h"
 #include "Player/NaraPlayerState.h"
 
@@ -37,10 +38,17 @@ ANaraPlayerCharacter::ANaraPlayerCharacter()
 void ANaraPlayerCharacter::BeginPlay()
 {
 	Super::BeginPlay();
+	InitAbilityActorInfo();
+}
 
+void ANaraPlayerCharacter::InitAbilityActorInfo()
+{
 	ANaraPlayerState* NaraPlayerState = GetPlayerState<ANaraPlayerState>();
 	check(NaraPlayerState);
 	NaraPlayerState->GetAbilitySystemComponent()->InitAbilityActorInfo(NaraPlayerState, this);
+
+	Cast<UNaraAbilitySystemComponent>(NaraPlayerState->GetAbilitySystemComponent())->AbilityActorInfoSet();
+
 	AbilitySystemComponent = NaraPlayerState->GetAbilitySystemComponent();
 	AttributeSet = NaraPlayerState->GetAttributeSet();
 

@@ -43,4 +43,6 @@ void ANaraCharacter::BeginPlay()
 
 	if (HealthComponent != nullptr)
 		HealthComponent->InitializeWithAbilitySystem(AbilitySystemComponent);
+
+	InitAbilityActorInfo();
 }
