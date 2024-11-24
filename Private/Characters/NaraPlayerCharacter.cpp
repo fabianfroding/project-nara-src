@@ -52,7 +52,7 @@ void ANaraPlayerCharacter::InitAbilityActorInfo()
 	{
 		if (ANaraHUD* NaraHUD = Cast<ANaraHUD>(NaraPlayerController->GetHUD()))
 		{
-			NaraHUD->InitOverlay(NaraPlayerController, NaraPlayerState, AbilitySystemComponent);
+			NaraHUD->InitOverlay(NaraPlayerController, NaraPlayerState, AbilitySystemComponent, AttributeSet);
 		}
 	}
 
