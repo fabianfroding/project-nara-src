@@ -9,7 +9,9 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "GAS/NaraAbilitySystemComponent.h"
 #include "Kismet/KismetSystemLibrary.h"
+#include "Player/NaraPlayerController.h"
 #include "Player/NaraPlayerState.h"
+#include "UI/NaraHUD.h"
 
 ANaraPlayerCharacter::ANaraPlayerCharacter()
 {
@@ -35,12 +37,6 @@ ANaraPlayerCharacter::ANaraPlayerCharacter()
 	FollowCamera->bUsePawnControlRotation = false; // Camera does not rotate relative to arm
 }
 
-void ANaraPlayerCharacter::BeginPlay()
-{
-	Super::BeginPlay();
-	InitAbilityActorInfo();
-}
-
 void ANaraPlayerCharacter::InitAbilityActorInfo()
 {
 	ANaraPlayerState* NaraPlayerState = GetPlayerState<ANaraPlayerState>();
@@ -51,6 +47,14 @@ void ANaraPlayerCharacter::InitAbilityActorInfo()
 
 	AbilitySystemComponent = NaraPlayerState->GetAbilitySystemComponent();
 	AttributeSet = NaraPlayerState->GetAttributeSet();
+
+	if (ANaraPlayerController* NaraPlayerController = Cast<ANaraPlayerController>(GetController()))
+	{
+		if (ANaraHUD* NaraHUD = Cast<ANaraHUD>(NaraPlayerController->GetHUD()))
+		{
+			NaraHUD->InitOverlay(NaraPlayerController, NaraPlayerState, AbilitySystemComponent);
+		}
+	}
 
 	for (TSoftClassPtr<UGameplayAbility> SoftStartingAbility : StartingAbilities)
 	{

@@ -39,8 +39,6 @@ public:
 	FORCEINLINE class UCameraComponent* GetFollowCamera() const { return FollowCamera; }
 
 protected:
-	virtual void BeginPlay() override;
-
 	virtual void InitAbilityActorInfo() override;
 	
 };

@@ -53,6 +53,8 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void TakeDamage(FGameplayEffectSpecHandle GameplayEffectSpecHandle, AActor* DamageSource);
+	
+	UFUNCTION(BlueprintPure)
 	const UNaraHealthSet* GetHealthSet() { return HealthSet; }
 
 	void InitializeWithAbilitySystem(UAbilitySystemComponent* InASC);
