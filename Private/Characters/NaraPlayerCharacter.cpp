@@ -56,6 +56,8 @@ void ANaraPlayerCharacter::InitAbilityActorInfo()
 		}
 	}
 
+	InitializeDefaultAttributes();
+
 	for (TSoftClassPtr<UGameplayAbility> SoftStartingAbility : StartingAbilities)
 	{
 		UClass* AbilityClass = UNaraAssetManager::LoadClassFromSoftClassPtr(SoftStartingAbility.Get());
