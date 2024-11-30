@@ -8,7 +8,7 @@
 #include "NaraHealthComponent.generated.h"
 
 class UAbilitySystemComponent;
-class UNaraHealthSet;
+class UNaraAttributeSet;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnDie);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnDamaged);
@@ -24,7 +24,7 @@ private:
 
 protected:
 	UPROPERTY()
-	TObjectPtr<const UNaraHealthSet> HealthSet; // Reference to the health set of component owner's ASC.
+	TObjectPtr<const UNaraAttributeSet> AttributeSet;
 
 	UPROPERTY(EditDefaultsOnly)
 	float InvincibilityFramesDuration = 0.f;
@@ -55,7 +55,7 @@ public:
 	void TakeDamage(FGameplayEffectSpecHandle GameplayEffectSpecHandle, AActor* DamageSource);
 	
 	UFUNCTION(BlueprintPure)
-	const UNaraHealthSet* GetHealthSet() { return HealthSet; }
+	const UNaraAttributeSet* GetAttributeSet() { return AttributeSet; }
 
 	void InitializeWithAbilitySystem(UAbilitySystemComponent* InASC);
 

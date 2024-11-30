@@ -5,14 +5,14 @@
 #include "AbilitySystemComponent.h"
 #include "AbilitySystemInterface.h"
 #include "Characters/NaraCharacterBase.h"
-#include "GASAttributeSets/NaraHealthSet.h"
+#include "GASAttributeSets/NaraAttributeSet.h"
 #include "Kismet/GameplayStatics.h"
 
 UNaraHealthComponent::UNaraHealthComponent()
 {
 	PrimaryComponentTick.bCanEverTick = false;
 
-	HealthSet = nullptr;
+	AttributeSet = nullptr;
 }
 
 void UNaraHealthComponent::TakeDamage(FGameplayEffectSpecHandle GameplayEffectSpecHandle, AActor* DamageSource)
@@ -22,7 +22,7 @@ void UNaraHealthComponent::TakeDamage(FGameplayEffectSpecHandle GameplayEffectSp
 
 bool UNaraHealthComponent::IsAlive() const
 {
-	return HealthSet->GetHealth() > 0.f;
+	return AttributeSet->GetHealth() > 0.f;
 }
 
 bool UNaraHealthComponent::IsInvulnerable()
@@ -41,7 +41,7 @@ void UNaraHealthComponent::HandleHealthChanged(AActor* DamageInstigator, AActor*
 	//if (!IsAlive())
 		//return;
 
-	const float TrueDamageAmount = OldValue - FMath::Clamp(NewValue, 0.f, HealthSet->GetMaxHealth());
+	const float TrueDamageAmount = OldValue - FMath::Clamp(NewValue, 0.f, AttributeSet->GetMaxHealth());
 	if (TrueDamageAmount > 0.f)
 	{
 		//PlayOnDamagedFeedback();
@@ -72,20 +72,20 @@ void UNaraHealthComponent::InitializeWithAbilitySystem(UAbilitySystemComponent* 
 		return;
 	}
 
-	InASC->AddSet<UNaraHealthSet>();
-	HealthSet = InASC->GetSet<UNaraHealthSet>();
+	InASC->AddSet<UNaraAttributeSet>();
+	AttributeSet = InASC->GetSet<UNaraAttributeSet>();
 
 	// Register to listen for attribute changes.
-	HealthSet->OnHealthChanged.AddUObject(this, &UNaraHealthComponent::HandleHealthChanged);
-	HealthSet->OnMaxHealthChanged.AddUObject(this, &UNaraHealthComponent::HandleMaxHealthChanged);
+	//AttributeSet->OnHealthChanged.AddUObject(this, &UNaraHealthComponent::HandleHealthChanged);
+	//AttributeSet->OnMaxHealthChanged.AddUObject(this, &UNaraHealthComponent::HandleMaxHealthChanged);
 
 	// Broadcast initial values.
-	OnHealthChanged.Broadcast(this, HealthSet->GetHealth(), HealthSet->GetHealth());
-	OnMaxHealthChanged.Broadcast(this, HealthSet->GetMaxHealth(), HealthSet->GetMaxHealth());
+	OnHealthChanged.Broadcast(this, AttributeSet->GetHealth(), AttributeSet->GetHealth());
+	OnMaxHealthChanged.Broadcast(this, AttributeSet->GetMaxHealth(), AttributeSet->GetMaxHealth());
 }
 
 void UNaraHealthComponent::HandleDeath()
 {
-	if (HealthSet->GetHealth() <= 0.f)
+	if (AttributeSet->GetHealth() <= 0.f)
 		OnDie.Broadcast();
 }
