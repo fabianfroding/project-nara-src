@@ -5,7 +5,7 @@
 #include "AbilitySystemComponent.h"
 #include "AbilitySystemInterface.h"
 #include "Characters/NaraCharacterBase.h"
-#include "GASAttributeSets/NaraAttributeSet.h"
+#include "GAS/NaraAttributeSet.h"
 #include "Kismet/GameplayStatics.h"
 
 UNaraHealthComponent::UNaraHealthComponent()

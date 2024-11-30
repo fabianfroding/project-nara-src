@@ -3,7 +3,7 @@
 #include "Characters/NaraEnemyCharacter.h"
 
 #include "GAS/NaraAbilitySystemComponent.h"
-#include "GASAttributeSets/NaraAttributeSet.h"
+#include "GAS/NaraAttributeSet.h"
 
 ANaraEnemyCharacter::ANaraEnemyCharacter()
 {

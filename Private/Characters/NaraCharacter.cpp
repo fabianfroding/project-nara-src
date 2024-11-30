@@ -9,7 +9,6 @@
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/Controller.h"
-#include "GASAttributeSets/NaraMovementSet.h"
 
 DEFINE_LOG_CATEGORY(LogTemplateCharacter);
 
