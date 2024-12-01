@@ -44,4 +44,5 @@ void ANaraCharacter::BeginPlay()
 		HealthComponent->InitializeWithAbilitySystem(AbilitySystemComponent);
 
 	InitAbilityActorInfo();
+	AddCharacterAbilities();
 }
