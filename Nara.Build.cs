@@ -20,6 +20,6 @@ public class Nara : ModuleRules
 			"GameplayTasks" 
 		});
 
-        PrivateDependencyModuleNames.AddRange(new string[] { });
+        PrivateDependencyModuleNames.AddRange(new string[] { "NavigationSystem" });
     }
 }
