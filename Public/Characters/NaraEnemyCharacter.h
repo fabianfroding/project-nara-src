@@ -4,6 +4,8 @@
 
 #include "CoreMinimal.h"
 #include "Characters/NaraCharacter.h"
+#include "GameplayEffectTypes.h"
+#include "UIControllers/OverlayWidgetController.h"
 
 #include "NaraEnemyCharacter.generated.h"
 
@@ -31,6 +33,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TArray<FVector> PatrolLocations;
 
+	UPROPERTY(BlueprintAssignable)
+	FOnAttributeChangedSignature OnHealthChanged;
+
 public:
 	ANaraEnemyCharacter();
 
@@ -38,5 +43,9 @@ protected:
 	virtual void BeginPlay() override;
 
 	virtual void InitAbilityActorInfo() override;
+
+private:
+	UFUNCTION()
+	void BroadcastHealthChanged(const FOnAttributeChangeData& Data) const;
 	
 };
