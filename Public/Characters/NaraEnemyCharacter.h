@@ -4,7 +4,6 @@
 
 #include "CoreMinimal.h"
 #include "Characters/NaraCharacter.h"
-#include "GameplayEffectTypes.h"
 #include "UIControllers/OverlayWidgetController.h"
 
 #include "NaraEnemyCharacter.generated.h"
@@ -43,9 +42,5 @@ protected:
 	virtual void BeginPlay() override;
 
 	virtual void InitAbilityActorInfo() override;
-
-private:
-	UFUNCTION()
-	void BroadcastHealthChanged(const FOnAttributeChangeData& Data) const;
 	
 };

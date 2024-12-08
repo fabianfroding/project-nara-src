@@ -19,8 +19,15 @@ void ANaraEnemyCharacter::BeginPlay()
 	UNaraAttributeSet* NaraAS = CastChecked<UNaraAttributeSet>(AttributeSet);
 	if (NaraAS)
 	{
-		AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(NaraAS->GetHealthAttribute()).AddUObject(this, &ANaraEnemyCharacter::BroadcastHealthChanged);
-		OnHealthChanged.Broadcast(NaraAS->GetHealth());
+		// NOTE: For some reason we can't use FOnAttributeChangeData in header files, 
+		// so we need to use a lambda here in the .cpp instead of definiing and using a function in the header file.
+		AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(NaraAS->GetHealthAttribute()).AddLambda(
+			[this](const FOnAttributeChangeData& Data)
+			{
+				OnHealthChanged.Broadcast(Data.NewValue);
+			}
+		);
+		
 	}
 }
 
@@ -29,9 +36,4 @@ void ANaraEnemyCharacter::InitAbilityActorInfo()
 	AbilitySystemComponent->InitAbilityActorInfo(this, this);
 	Cast<UNaraAbilitySystemComponent>(AbilitySystemComponent)->AbilityActorInfoSet();
 	InitializeDefaultAttributes();
-}
-
-void ANaraEnemyCharacter::BroadcastHealthChanged(const FOnAttributeChangeData& Data) const
-{
-	OnHealthChanged.Broadcast(Data.NewValue);
 }
