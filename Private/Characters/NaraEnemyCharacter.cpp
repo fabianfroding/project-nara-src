@@ -2,8 +2,10 @@
 
 #include "Characters/NaraEnemyCharacter.h"
 
+#include "Core/NaraGameplayTags.h"
 #include "GAS/NaraAbilitySystemComponent.h"
 #include "GAS/NaraAttributeSet.h"
+#include "GameFramework/CharacterMovementComponent.h"
 
 ANaraEnemyCharacter::ANaraEnemyCharacter()
 {
@@ -14,6 +16,7 @@ ANaraEnemyCharacter::ANaraEnemyCharacter()
 void ANaraEnemyCharacter::BeginPlay()
 {
 	Super::BeginPlay();
+	GetCharacterMovement()->MaxWalkSpeed = BaseWalkSpeed;
 	InitAbilityActorInfo();
 
 	UNaraAttributeSet* NaraAS = CastChecked<UNaraAttributeSet>(AttributeSet);
@@ -27,7 +30,11 @@ void ANaraEnemyCharacter::BeginPlay()
 				OnHealthChanged.Broadcast(Data.NewValue);
 			}
 		);
+
+		AbilitySystemComponent->RegisterGameplayTagEvent(FNaraGameplayTags::Get().Effects_HitReact, EGameplayTagEventType::NewOrRemoved).AddUObject(
+			this, &ANaraEnemyCharacter::HitReactTagChanged);
 		
+		OnHealthChanged.Broadcast(NaraAS->GetHealth());
 	}
 }
 
@@ -36,4 +43,10 @@ void ANaraEnemyCharacter::InitAbilityActorInfo()
 	AbilitySystemComponent->InitAbilityActorInfo(this, this);
 	Cast<UNaraAbilitySystemComponent>(AbilitySystemComponent)->AbilityActorInfoSet();
 	InitializeDefaultAttributes();
+}
+
+void ANaraEnemyCharacter::HitReactTagChanged(const FGameplayTag CallbackTag, int32 NewCount)
+{
+	bHitReacting = NewCount > 0;
+	GetCharacterMovement()->MaxWalkSpeed = bHitReacting ? 0.f :BaseWalkSpeed;
 }

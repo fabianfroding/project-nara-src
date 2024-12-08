@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Characters/NaraCharacter.h"
+#include "Interfaces/CombatInterface.h"
 #include "UIControllers/OverlayWidgetController.h"
 
 #include "NaraEnemyCharacter.generated.h"
@@ -35,8 +36,17 @@ public:
 	UPROPERTY(BlueprintAssignable)
 	FOnAttributeChangedSignature OnHealthChanged;
 
+	UPROPERTY(BlueprintReadOnly)
+	bool bHitReacting = false;
+
+	UPROPERTY(BlueprintReadOnly)
+	float BaseWalkSpeed = 250.f;
+
 public:
 	ANaraEnemyCharacter();
+
+	UFUNCTION()
+	void HitReactTagChanged(const FGameplayTag CallbackTag, int32 NewCount);
 
 protected:
 	virtual void BeginPlay() override;
