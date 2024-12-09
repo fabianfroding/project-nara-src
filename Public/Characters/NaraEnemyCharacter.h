@@ -23,6 +23,9 @@ class NARA_API ANaraEnemyCharacter : public ANaraCharacter
 	GENERATED_BODY()
 
 protected:
+	UPROPERTY(EditDefaultsOnly)
+	TArray<TSubclassOf<UGameplayAbility>> CommonAbilities;
+
 	UPROPERTY(BlueprintReadWrite)
 	E_NaraAIState AIState = E_NaraAIState::E_Idle;
 
@@ -52,5 +55,8 @@ protected:
 	virtual void BeginPlay() override;
 
 	virtual void InitAbilityActorInfo() override;
+
+private:
+	void GiveStartupAbilities();
 	
 };

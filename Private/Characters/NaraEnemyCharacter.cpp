@@ -18,6 +18,7 @@ void ANaraEnemyCharacter::BeginPlay()
 	Super::BeginPlay();
 	GetCharacterMovement()->MaxWalkSpeed = BaseWalkSpeed;
 	InitAbilityActorInfo();
+	GiveStartupAbilities();
 
 	UNaraAttributeSet* NaraAS = CastChecked<UNaraAttributeSet>(AttributeSet);
 	if (NaraAS)
@@ -43,6 +44,15 @@ void ANaraEnemyCharacter::InitAbilityActorInfo()
 	AbilitySystemComponent->InitAbilityActorInfo(this, this);
 	Cast<UNaraAbilitySystemComponent>(AbilitySystemComponent)->AbilityActorInfoSet();
 	InitializeDefaultAttributes();
+}
+
+void ANaraEnemyCharacter::GiveStartupAbilities()
+{
+	for (const TSubclassOf<UGameplayAbility> AbilityClass : CommonAbilities)
+	{
+		FGameplayAbilitySpec AbilitySpec = FGameplayAbilitySpec(AbilityClass, 1);
+		AbilitySystemComponent->GiveAbility(AbilitySpec);
+	}
 }
 
 void ANaraEnemyCharacter::HitReactTagChanged(const FGameplayTag CallbackTag, int32 NewCount)
