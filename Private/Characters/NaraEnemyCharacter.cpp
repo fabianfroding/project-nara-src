@@ -60,3 +60,9 @@ void ANaraEnemyCharacter::HitReactTagChanged(const FGameplayTag CallbackTag, int
 	bHitReacting = NewCount > 0;
 	GetCharacterMovement()->MaxWalkSpeed = bHitReacting ? 0.f :BaseWalkSpeed;
 }
+
+void ANaraEnemyCharacter::Die()
+{
+	SetLifeSpan(DeathLifeSpan);
+	Super::Die();
+}

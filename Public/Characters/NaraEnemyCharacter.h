@@ -45,11 +45,16 @@ public:
 	UPROPERTY(BlueprintReadOnly)
 	float BaseWalkSpeed = 250.f;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	float DeathLifeSpan = 5.f;
+
 public:
 	ANaraEnemyCharacter();
 
 	UFUNCTION()
 	void HitReactTagChanged(const FGameplayTag CallbackTag, int32 NewCount);
+
+	virtual void Die() override;
 
 protected:
 	virtual void BeginPlay() override;
