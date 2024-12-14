@@ -35,6 +35,9 @@ protected:
 	UPROPERTY(BlueprintReadWrite)
 	int32 CurrentPatrolIndex = 0;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	bool bIsRanged = false; // If more types are needed, consider using gameplay tags or enums.
+
 	UPROPERTY(EditDefaultsOnly)
 	TObjectPtr<UBehaviorTree> BehaviorTree;
 
@@ -52,7 +55,7 @@ public:
 	bool bHitReacting = false;
 
 	UPROPERTY(BlueprintReadOnly)
-	float BaseWalkSpeed = 250.f;
+	float BaseWalkSpeed = 125.f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	float DeathLifeSpan = 5.f;

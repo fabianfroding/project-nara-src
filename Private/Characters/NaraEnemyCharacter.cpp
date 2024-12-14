@@ -33,7 +33,6 @@ void ANaraEnemyCharacter::PossessedBy(AController* NewController)
 
 		NaraAIController->GetBlackboardComponent()->SetValueAsBool(FName("HitReacting"), false);
 
-		const bool bIsRanged = false; // TODO.
 		NaraAIController->GetBlackboardComponent()->SetValueAsBool(FName("RangedAttacker"), bIsRanged);
 	}
 }
