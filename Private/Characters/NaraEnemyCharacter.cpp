@@ -14,6 +14,12 @@ ANaraEnemyCharacter::ANaraEnemyCharacter()
 {
 	AbilitySystemComponent = CreateDefaultSubobject<UNaraAbilitySystemComponent>("AbilitySystemComponent");
 	AttributeSet = CreateDefaultSubobject<UNaraAttributeSet>("AttributeSet");
+
+	bUseControllerRotationPitch = false;
+	bUseControllerRotationRoll = false;
+	bUseControllerRotationYaw = false;
+
+	GetCharacterMovement()->bUseControllerDesiredRotation = true;
 }
 
 void ANaraEnemyCharacter::PossessedBy(AController* NewController)
