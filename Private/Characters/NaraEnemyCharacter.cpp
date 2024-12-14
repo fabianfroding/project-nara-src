@@ -25,10 +25,16 @@ ANaraEnemyCharacter::ANaraEnemyCharacter()
 void ANaraEnemyCharacter::PossessedBy(AController* NewController)
 {
 	Super::PossessedBy(NewController);
+
 	if (NaraAIController = Cast<ANaraAIController>(NewController))
 	{
 		NaraAIController->GetBlackboardComponent()->InitializeBlackboard(*BehaviorTree->BlackboardAsset);
 		NaraAIController->RunBehaviorTree(BehaviorTree);
+
+		NaraAIController->GetBlackboardComponent()->SetValueAsBool(FName("HitReacting"), false);
+
+		const bool bIsRanged = false; // TODO.
+		NaraAIController->GetBlackboardComponent()->SetValueAsBool(FName("RangedAttacker"), bIsRanged);
 	}
 }
 
@@ -78,6 +84,7 @@ void ANaraEnemyCharacter::HitReactTagChanged(const FGameplayTag CallbackTag, int
 {
 	bHitReacting = NewCount > 0;
 	GetCharacterMovement()->MaxWalkSpeed = bHitReacting ? 0.f : BaseWalkSpeed;
+	NaraAIController->GetBlackboardComponent()->SetValueAsBool(FName("HitReacting"), bHitReacting);
 }
 
 void ANaraEnemyCharacter::Die()
