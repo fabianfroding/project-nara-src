@@ -2,6 +2,9 @@
 
 #include "Characters/NaraEnemyCharacter.h"
 
+#include "BehaviorTree/BehaviorTree.h"
+#include "BehaviorTree/BlackboardComponent.h"
+#include "AI/NaraAIController.h"
 #include "Core/NaraGameplayTags.h"
 #include "GAS/NaraAbilitySystemComponent.h"
 #include "GAS/NaraAttributeSet.h"
@@ -11,6 +14,16 @@ ANaraEnemyCharacter::ANaraEnemyCharacter()
 {
 	AbilitySystemComponent = CreateDefaultSubobject<UNaraAbilitySystemComponent>("AbilitySystemComponent");
 	AttributeSet = CreateDefaultSubobject<UNaraAttributeSet>("AttributeSet");
+}
+
+void ANaraEnemyCharacter::PossessedBy(AController* NewController)
+{
+	Super::PossessedBy(NewController);
+	if (NaraAIController = Cast<ANaraAIController>(NewController))
+	{
+		NaraAIController->GetBlackboardComponent()->InitializeBlackboard(*BehaviorTree->BlackboardAsset);
+		NaraAIController->RunBehaviorTree(BehaviorTree);
+	}
 }
 
 void ANaraEnemyCharacter::BeginPlay()

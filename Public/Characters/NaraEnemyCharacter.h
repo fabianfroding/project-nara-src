@@ -9,6 +9,9 @@
 
 #include "NaraEnemyCharacter.generated.h"
 
+class UBehaviorTree;
+class ANaraAIController;
+
 UENUM(BlueprintType)
 enum class E_NaraAIState : uint8
 {
@@ -32,6 +35,12 @@ protected:
 	UPROPERTY(BlueprintReadWrite)
 	int32 CurrentPatrolIndex = 0;
 
+	UPROPERTY(EditDefaultsOnly)
+	TObjectPtr<UBehaviorTree> BehaviorTree;
+
+	UPROPERTY()
+	TObjectPtr<ANaraAIController> NaraAIController;
+
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TArray<FVector> PatrolLocations;
@@ -50,6 +59,7 @@ public:
 
 public:
 	ANaraEnemyCharacter();
+	virtual void PossessedBy(AController* NewController) override;
 
 	UFUNCTION()
 	void HitReactTagChanged(const FGameplayTag CallbackTag, int32 NewCount);
