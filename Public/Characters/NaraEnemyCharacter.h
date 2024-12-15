@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "Characters/NaraCharacter.h"
 #include "Interfaces/CombatInterface.h"
+#include "Interfaces/EnemyInterface.h"
 #include "UIControllers/OverlayWidgetController.h"
 
 #include "NaraEnemyCharacter.generated.h"
@@ -21,7 +22,7 @@ enum class E_NaraAIState : uint8
 };
 
 UCLASS()
-class NARA_API ANaraEnemyCharacter : public ANaraCharacter
+class NARA_API ANaraEnemyCharacter : public ANaraCharacter, public IEnemyInterface
 {
 	GENERATED_BODY()
 
@@ -60,6 +61,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	float DeathLifeSpan = 5.f;
 
+	UPROPERTY(BlueprintReadWrite)
+	TObjectPtr<AActor> CombatTarget;
+
 public:
 	ANaraEnemyCharacter();
 	virtual void PossessedBy(AController* NewController) override;
@@ -67,7 +71,12 @@ public:
 	UFUNCTION()
 	void HitReactTagChanged(const FGameplayTag CallbackTag, int32 NewCount);
 
+	/* Combat Interface */
 	virtual void Die() override;
+
+	/* Enemy Interface */
+	virtual void SetCombatTarget_Implementation(AActor* InCombatTarget) override;
+	virtual AActor* GetCombatTarget_Implementation() const override;
 
 protected:
 	virtual void BeginPlay() override;

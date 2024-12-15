@@ -91,3 +91,13 @@ void ANaraEnemyCharacter::Die()
 	SetLifeSpan(DeathLifeSpan); // TODO: On lifespan expire, create poof effect to make the enemy disappear.
 	Super::Die();
 }
+
+void ANaraEnemyCharacter::SetCombatTarget_Implementation(AActor* InCombatTarget)
+{
+	CombatTarget = InCombatTarget;
+}
+
+AActor* ANaraEnemyCharacter::GetCombatTarget_Implementation() const
+{
+	return CombatTarget;
+}
