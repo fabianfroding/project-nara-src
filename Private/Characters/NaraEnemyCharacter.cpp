@@ -83,7 +83,10 @@ void ANaraEnemyCharacter::HitReactTagChanged(const FGameplayTag CallbackTag, int
 {
 	bHitReacting = NewCount > 0;
 	GetCharacterMovement()->MaxWalkSpeed = bHitReacting ? 0.f : BaseWalkSpeed;
-	NaraAIController->GetBlackboardComponent()->SetValueAsBool(FName("HitReacting"), bHitReacting);
+	if (NaraAIController && NaraAIController->GetBlackboardComponent())
+	{
+		NaraAIController->GetBlackboardComponent()->SetValueAsBool(FName("HitReacting"), bHitReacting);
+	}
 }
 
 void ANaraEnemyCharacter::Die()
