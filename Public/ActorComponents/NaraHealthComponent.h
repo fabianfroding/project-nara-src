@@ -14,6 +14,8 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnDie);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnDamaged);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FOnHealthAttributeChanged, UNaraHealthComponent*, HealthComponent, float, OldValue, float, NewValue);
 
+// TODO: Move this to either the attribute set, or to a character class. Most of this component is just data. It unnecessary performance-wise to have it as a component.
+
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
 class NARA_API UNaraHealthComponent : public UActorComponent
 {
