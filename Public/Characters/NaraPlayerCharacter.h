@@ -38,7 +38,15 @@ public:
 	FORCEINLINE class USpringArmComponent* GetCameraBoom() const { return CameraBoom; }
 	FORCEINLINE class UCameraComponent* GetFollowCamera() const { return FollowCamera; }
 
+	/* Combat Interface Functions */
+	virtual void Die() override { OnPlayerDie(); }
+	virtual bool IsDead_Implementation() const override;
+	/* End Combat Interface Functions */
+
 protected:
 	virtual void InitAbilityActorInfo() override;
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void OnPlayerDie();
 	
 };

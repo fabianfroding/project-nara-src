@@ -92,6 +92,10 @@ void ANaraEnemyCharacter::HitReactTagChanged(const FGameplayTag CallbackTag, int
 void ANaraEnemyCharacter::Die()
 {
 	SetLifeSpan(DeathLifeSpan); // TODO: On lifespan expire, create poof effect to make the enemy disappear.
+	
+	if (NaraAIController)
+		NaraAIController->GetBlackboardComponent()->SetValueAsBool(FName("Dead"), true);
+
 	Super::Die();
 }
 

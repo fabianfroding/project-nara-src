@@ -8,6 +8,7 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "GAS/NaraAbilitySystemComponent.h"
+#include "GAS/NaraAttributeSet.h"
 #include "Kismet/KismetSystemLibrary.h"
 #include "Player/NaraPlayerController.h"
 #include "Player/NaraPlayerState.h"
@@ -35,6 +36,16 @@ ANaraPlayerCharacter::ANaraPlayerCharacter()
 	FollowCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("FollowCamera"));
 	FollowCamera->SetupAttachment(CameraBoom, USpringArmComponent::SocketName); // Attach the camera to the end of the boom and let the boom adjust to match the controller orientation
 	FollowCamera->bUsePawnControlRotation = false; // Camera does not rotate relative to arm
+}
+
+bool ANaraPlayerCharacter::IsDead_Implementation() const
+{
+	// TODO: This isnt working...
+	if (UNaraAttributeSet* NaraAS = Cast<UNaraAttributeSet>(GetPlayerState<ANaraPlayerState>()->GetAttributeSet()))
+	{
+		return NaraAS->GetHealth() <= 0;
+	}
+	return false;
 }
 
 void ANaraPlayerCharacter::InitAbilityActorInfo()
