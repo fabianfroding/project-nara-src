@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Characters/NaraCharacter.h"
+#include "Characters/NaraCharacterBase.h"
 
 #include "NaraPlayerCharacter.generated.h"
 
@@ -12,7 +12,7 @@ class UGameplayAbility;
 class USpringArmComponent;
 
 UCLASS()
-class NARA_API ANaraPlayerCharacter : public ANaraCharacter
+class NARA_API ANaraPlayerCharacter : public ANaraCharacterBase
 {
 	GENERATED_BODY()
 

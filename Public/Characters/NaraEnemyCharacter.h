@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Characters/NaraCharacter.h"
+#include "Characters/NaraCharacterBase.h"
 #include "Interfaces/CombatInterface.h"
 #include "Interfaces/EnemyInterface.h"
 #include "UIControllers/OverlayWidgetController.h"
@@ -22,7 +22,7 @@ enum class E_NaraAIState : uint8
 };
 
 UCLASS()
-class NARA_API ANaraEnemyCharacter : public ANaraCharacter, public IEnemyInterface
+class NARA_API ANaraEnemyCharacter : public ANaraCharacterBase, public IEnemyInterface
 {
 	GENERATED_BODY()
 
