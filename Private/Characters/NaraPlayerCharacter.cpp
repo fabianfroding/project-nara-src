@@ -58,6 +58,7 @@ void ANaraPlayerCharacter::InitAbilityActorInfo()
 
 	AbilitySystemComponent = NaraPlayerState->GetAbilitySystemComponent();
 	AttributeSet = NaraPlayerState->GetAttributeSet();
+	OnAscRegistered.Broadcast(AbilitySystemComponent);
 
 	if (ANaraPlayerController* NaraPlayerController = Cast<ANaraPlayerController>(GetController()))
 	{
