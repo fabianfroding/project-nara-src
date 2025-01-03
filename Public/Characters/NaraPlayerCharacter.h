@@ -16,15 +16,6 @@ class NARA_API ANaraPlayerCharacter : public ANaraCharacterBase
 {
 	GENERATED_BODY()
 
-protected:
-	/* GAS Variables */
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "GAS")
-	TArray<TSoftClassPtr<UGameplayAbility>> StartingAbilities;
-
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "GAS")
-	TSoftClassPtr<UGameplayAbility> PlayerBoomerangAbility;
-	/* End GAS Variables */
-
 public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
 	USpringArmComponent* CameraBoom;

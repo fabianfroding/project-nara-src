@@ -4,7 +4,6 @@
 
 #include "AbilitySystemComponent.h"
 #include "Camera/CameraComponent.h"
-#include "Core/NaraAssetManager.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "GAS/NaraAbilitySystemComponent.h"
@@ -69,14 +68,4 @@ void ANaraPlayerCharacter::InitAbilityActorInfo()
 	}
 
 	InitializeDefaultAttributes();
-
-	for (TSoftClassPtr<UGameplayAbility> SoftStartingAbility : StartingAbilities)
-	{
-		UClass* AbilityClass = UNaraAssetManager::LoadClassFromSoftClassPtr(SoftStartingAbility.Get());
-		if (!UKismetSystemLibrary::IsValidClass(AbilityClass))
-			continue;
-
-		FGameplayAbilitySpec AbilitySpec(AbilityClass);
-		AbilitySystemComponent->GiveAbility(AbilitySpec);
-	}
 }
