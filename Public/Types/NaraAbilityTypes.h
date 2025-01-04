@@ -67,9 +67,6 @@ protected:
 	bool bIsBlockedHit = false;
 
 	UPROPERTY()
-	bool bIsCriticalHit = false;
-
-	UPROPERTY()
 	bool bIsSuccessfulDebuff = false;
 
 	UPROPERTY()
@@ -88,7 +85,6 @@ protected:
 
 public:
 	bool IsBlockedHit() const { return bIsBlockedHit; }
-	bool IsCriticalHit() const { return bIsCriticalHit; }
 	bool IsSuccessfulDebuff() const { return bIsSuccessfulDebuff; }
 	float GetDebuffDamage() const { return DebuffDamage; }
 	float GetDebuffDuration() const { return DebuffDuration; }
@@ -97,7 +93,6 @@ public:
 	FVector GetKnockbackForce() const { return KnockbackForce; }
 
 	void SetIsBlockedHit(const bool bInIsBlockedHit) { bIsBlockedHit = bInIsBlockedHit; }
-	void SetIsCriticalHit(const bool bInIsCriticalHit) { bIsCriticalHit = bInIsCriticalHit; }
 	void SetIsSuccessfulDebuff(bool bInIsDebuff) { bIsSuccessfulDebuff = bInIsDebuff; }
 	void SetDebuffDamage(float InDamage) { DebuffDamage = InDamage; }
 	void SetDebuffDuration(float InDuration) { DebuffDuration = InDuration; }
@@ -106,10 +101,7 @@ public:
 	void SetKnockbackForce(const FVector& InForce) { KnockbackForce = InForce; }
 
 	/* Returns the actual struct used for serialization, subclasses must override this! */
-	virtual UScriptStruct* GetScriptStruct() const
-	{
-		return StaticStruct();
-	}
+	virtual UScriptStruct* GetScriptStruct() const { return StaticStruct(); }
 
 	/** Creates a copy of this context, used to duplicate for later modifications */
 	virtual FNaraGameplayEffectContext* Duplicate() const
@@ -124,17 +116,4 @@ public:
 		return NewContext;
 	}
 
-	/* Custom serialization, subclasses must override this */
-	virtual bool NetSerialize(FArchive& Ar, class UPackageMap* Map, bool& bOutSuccess) override;
-
-};
-
-template<>
-struct TStructOpsTypeTraits<FNaraGameplayEffectContext> : TStructOpsTypeTraitsBase2<FNaraGameplayEffectContext>
-{
-	enum
-	{
-		WithNetSerializer = true,
-		WithCopy = true
-	};
 };
