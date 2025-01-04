@@ -78,7 +78,10 @@ protected:
 	UPROPERTY()
 	float DebuffFrequency = 0.f;
 
+	// TODO: Remove this since we dont want damage-type specific debuffs.
 	TSharedPtr<FGameplayTag> DamageType;
+
+	// TODO: Add DebuffType/Tag here to be able to set debuffs without damage types.
 
 	UPROPERTY()
 	FVector KnockbackForce = FVector::ZeroVector;

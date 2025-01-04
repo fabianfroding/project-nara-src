@@ -4,6 +4,7 @@
 
 #include "AbilitySystemComponent.h"
 #include "Camera/CameraComponent.h"
+#include "Core/NaraGameplayTags.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "GAS/NaraAbilitySystemComponent.h"
@@ -58,6 +59,8 @@ void ANaraPlayerCharacter::InitAbilityActorInfo()
 	AbilitySystemComponent = NaraPlayerState->GetAbilitySystemComponent();
 	AttributeSet = NaraPlayerState->GetAttributeSet();
 	OnAscRegistered.Broadcast(AbilitySystemComponent);
+	AbilitySystemComponent->RegisterGameplayTagEvent(FNaraGameplayTags::Get().Debuff_Stun, EGameplayTagEventType::NewOrRemoved)
+		.AddUObject(this, &ANaraPlayerCharacter::StunTagChanged);
 
 	if (ANaraPlayerController* NaraPlayerController = Cast<ANaraPlayerController>(GetController()))
 	{

@@ -56,9 +56,6 @@ public:
 	bool bHitReacting = false;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
-	float BaseWalkSpeed = 125.f;
-
-	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	float DeathLifeSpan = 5.f;
 
 	UPROPERTY(BlueprintReadWrite)
@@ -82,6 +79,8 @@ protected:
 	virtual void BeginPlay() override;
 
 	virtual void InitAbilityActorInfo() override;
+
+	virtual void StunTagChanged(const FGameplayTag CallbackTag, int32 NewCount) override;
 
 private:
 	void GiveStartupAbilities();

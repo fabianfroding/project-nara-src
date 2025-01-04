@@ -20,6 +20,8 @@ ANaraEnemyCharacter::ANaraEnemyCharacter()
 	bUseControllerRotationYaw = false;
 
 	GetCharacterMovement()->bUseControllerDesiredRotation = true;
+
+	BaseWalkSpeed = 125.f;
 }
 
 void ANaraEnemyCharacter::PossessedBy(AController* NewController)
@@ -69,6 +71,17 @@ void ANaraEnemyCharacter::InitAbilityActorInfo()
 	Cast<UNaraAbilitySystemComponent>(AbilitySystemComponent)->AbilityActorInfoSet();
 	InitializeDefaultAttributes();
 	OnAscRegistered.Broadcast(AbilitySystemComponent);
+	AbilitySystemComponent->RegisterGameplayTagEvent(FNaraGameplayTags::Get().Debuff_Stun, EGameplayTagEventType::NewOrRemoved)
+		.AddUObject(this, &ANaraEnemyCharacter::StunTagChanged);
+}
+
+void ANaraEnemyCharacter::StunTagChanged(const FGameplayTag CallbackTag, int32 NewCount)
+{
+	Super::StunTagChanged(CallbackTag, NewCount);
+	if (NaraAIController && NaraAIController->GetBlackboardComponent())
+	{
+		NaraAIController->GetBlackboardComponent()->SetValueAsBool(FName("Stunned"), bIsStunned);
+	}
 }
 
 void ANaraEnemyCharacter::GiveStartupAbilities()
