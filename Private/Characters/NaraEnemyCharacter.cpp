@@ -9,6 +9,8 @@
 #include "GAS/NaraAbilitySystemComponent.h"
 #include "GAS/NaraAttributeSet.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "Kismet/GameplayStatics.h"
+#include "NiagaraFunctionLibrary.h"
 
 ANaraEnemyCharacter::ANaraEnemyCharacter()
 {
@@ -82,6 +84,17 @@ void ANaraEnemyCharacter::StunTagChanged(const FGameplayTag CallbackTag, int32 N
 	{
 		NaraAIController->GetBlackboardComponent()->SetValueAsBool(FName("Stunned"), bIsStunned);
 	}
+}
+
+void ANaraEnemyCharacter::Destroyed()
+{
+	if (OnDestroySFX)
+		UGameplayStatics::PlaySoundAtLocation(this, OnDestroySFX, GetActorLocation(), FRotator::ZeroRotator);
+
+	if (OnDestroyVFX)
+		UNiagaraFunctionLibrary::SpawnSystemAtLocation(this, OnDestroyVFX, GetActorLocation());
+
+	Super::Destroyed();
 }
 
 void ANaraEnemyCharacter::GiveStartupAbilities()

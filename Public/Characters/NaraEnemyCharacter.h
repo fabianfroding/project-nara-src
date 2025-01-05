@@ -12,6 +12,8 @@
 
 class UBehaviorTree;
 class ANaraAIController;
+class UNiagaraSystem;
+class USoundBase;
 
 UENUM(BlueprintType)
 enum class E_NaraAIState : uint8
@@ -38,6 +40,14 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	bool bIsRanged = false; // If more types are needed, consider using gameplay tags or enums.
+
+	/* OnDestroy FX */
+	UPROPERTY(EditDefaultsOnly, Category = "NaraEnemyCharacter|OnDestroyFX")
+	TObjectPtr<UNiagaraSystem> OnDestroyVFX;
+
+	UPROPERTY(EditDefaultsOnly, Category = "NaraEnemyCharacter|OnDestroyFX")
+	TObjectPtr<USoundBase> OnDestroySFX;
+	/* End OnDestroy FX */
 
 	UPROPERTY(EditDefaultsOnly)
 	TObjectPtr<UBehaviorTree> BehaviorTree;
@@ -81,6 +91,8 @@ protected:
 	virtual void InitAbilityActorInfo() override;
 
 	virtual void StunTagChanged(const FGameplayTag CallbackTag, int32 NewCount) override;
+
+	virtual void Destroyed() override;
 
 private:
 	void GiveStartupAbilities();
