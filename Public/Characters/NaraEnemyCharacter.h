@@ -32,6 +32,10 @@ protected:
 	UPROPERTY(EditDefaultsOnly)
 	TArray<TSubclassOf<UGameplayAbility>> CommonAbilities;
 
+	// Tag broadcasted upon death.
+	UPROPERTY(EditAnywhere)
+	FGameplayTag EnemyDeathTag;
+
 	UPROPERTY(BlueprintReadWrite)
 	E_NaraAIState AIState = E_NaraAIState::E_Idle;
 

@@ -2,9 +2,10 @@
 
 #include "Characters/NaraEnemyCharacter.h"
 
+#include "AI/NaraAIController.h"
 #include "BehaviorTree/BehaviorTree.h"
 #include "BehaviorTree/BlackboardComponent.h"
-#include "AI/NaraAIController.h"
+#include "Core/NaraCombatManager.h"
 #include "Core/NaraGameplayTags.h"
 #include "GAS/NaraAbilitySystemComponent.h"
 #include "GAS/NaraAttributeSet.h"
@@ -24,6 +25,9 @@ ANaraEnemyCharacter::ANaraEnemyCharacter()
 	GetCharacterMovement()->bUseControllerDesiredRotation = true;
 
 	BaseWalkSpeed = 125.f;
+
+	if (!EnemyDeathTag.IsValid())
+		EnemyDeathTag = FNaraGameplayTags::Get().CombatEvent_EnemyDeath;
 }
 
 void ANaraEnemyCharacter::PossessedBy(AController* NewController)
@@ -65,6 +69,9 @@ void ANaraEnemyCharacter::BeginPlay()
 		
 		OnHealthChanged.Broadcast(NaraAS->GetHealth());
 	}
+
+	if (UNaraCombatManager* CombatManager = UNaraCombatManager::GetCombatManager())
+		CombatManager->RegisterEnemy(this);
 }
 
 void ANaraEnemyCharacter::InitAbilityActorInfo()
@@ -122,6 +129,9 @@ void ANaraEnemyCharacter::Die()
 	
 	if (NaraAIController)
 		NaraAIController->GetBlackboardComponent()->SetValueAsBool(FName("Dead"), true);
+
+	if (UNaraCombatManager* CombatManager = UNaraCombatManager::GetCombatManager())
+		CombatManager->EnemyDied(this, EnemyDeathTag);
 
 	Super::Die();
 }

@@ -2,7 +2,12 @@
 
 #include "Core/NaraGameMode.h"
 
-ANaraGameMode::ANaraGameMode()
-{
+#include "Core/NaraCombatManager.h"
 
+void ANaraGameMode::BeginPlay()
+{
+	Super::BeginPlay();
+
+	UNaraCombatManager* CombatManager = NewObject<UNaraCombatManager>(this, UNaraCombatManager::StaticClass());
+	CombatManager->Initialize();
 }
