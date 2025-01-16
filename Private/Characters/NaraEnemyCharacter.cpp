@@ -70,8 +70,7 @@ void ANaraEnemyCharacter::BeginPlay()
 		OnHealthChanged.Broadcast(NaraAS->GetHealth());
 	}
 
-	if (UNaraCombatManager* CombatManager = UNaraCombatManager::GetCombatManager())
-		CombatManager->RegisterEnemy(this);
+	UNaraCombatManager::Get()->RegisterEnemy(this);
 }
 
 void ANaraEnemyCharacter::InitAbilityActorInfo()
@@ -130,8 +129,7 @@ void ANaraEnemyCharacter::Die()
 	if (NaraAIController)
 		NaraAIController->GetBlackboardComponent()->SetValueAsBool(FName("Dead"), true);
 
-	if (UNaraCombatManager* CombatManager = UNaraCombatManager::GetCombatManager())
-		CombatManager->EnemyDied(this, EnemyDeathTag);
+	UNaraCombatManager::Get()->EnemyDied(this, EnemyDeathTag);
 
 	Super::Die();
 }

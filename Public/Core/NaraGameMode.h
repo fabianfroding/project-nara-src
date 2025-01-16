@@ -12,10 +12,4 @@ class ANaraGameMode : public AGameModeBase
 {
 	GENERATED_BODY()
 
-protected:
-	virtual void BeginPlay() override;
-
 };
-
-
-
