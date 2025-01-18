@@ -12,7 +12,7 @@
 #include "Kismet/KismetSystemLibrary.h"
 #include "Player/NaraPlayerController.h"
 #include "Player/NaraPlayerState.h"
-#include "UI/NaraHUD.h"
+#include "UI/NaraGameHUD.h"
 
 ANaraPlayerCharacter::ANaraPlayerCharacter()
 {
@@ -64,9 +64,9 @@ void ANaraPlayerCharacter::InitAbilityActorInfo()
 
 	if (ANaraPlayerController* NaraPlayerController = Cast<ANaraPlayerController>(GetController()))
 	{
-		if (ANaraHUD* NaraHUD = Cast<ANaraHUD>(NaraPlayerController->GetHUD()))
+		if (ANaraGameHUD* NaraGameHUD = Cast<ANaraGameHUD>(NaraPlayerController->GetHUD()))
 		{
-			NaraHUD->InitOverlay(NaraPlayerController, NaraPlayerState, AbilitySystemComponent, AttributeSet);
+			NaraGameHUD->InitOverlay(NaraPlayerController, NaraPlayerState, AbilitySystemComponent, AttributeSet);
 		}
 	}
 
