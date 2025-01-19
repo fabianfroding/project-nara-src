@@ -6,7 +6,6 @@
 #include "Characters/NaraCharacterBase.h"
 #include "Interfaces/CombatInterface.h"
 #include "Interfaces/EnemyInterface.h"
-#include "UIControllers/OverlayWidgetController.h"
 
 #include "NaraEnemyCharacter.generated.h"
 
@@ -22,6 +21,8 @@ enum class E_NaraAIState : uint8
 	E_Idle		UMETA(DisplayName = "Idle"),
 	E_Chase		UMETA(DisplayName = "Chase")
 };
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnAttributeChangedSignature, float, NewValue); // TODO: Temp fix. This doesn't belong in enemy character.
 
 UCLASS()
 class NARA_API ANaraEnemyCharacter : public ANaraCharacterBase, public IEnemyInterface

@@ -56,7 +56,7 @@ void ANaraEnemyCharacter::BeginPlay()
 	if (NaraAS)
 	{
 		// NOTE: For some reason we can't use FOnAttributeChangeData in header files, 
-		// so we need to use a lambda here in the .cpp instead of definiing and using a function in the header file.
+		// so we need to use a lambda here in the .cpp instead of defining and using a function in the header file.
 		AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(NaraAS->GetHealthAttribute()).AddLambda(
 			[this](const FOnAttributeChangeData& Data)
 			{
