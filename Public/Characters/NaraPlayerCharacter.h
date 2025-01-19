@@ -11,6 +11,8 @@ class UCameraComponent;
 class UGameplayAbility;
 class USpringArmComponent;
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnPlayerInitAbilityActorInfo, UAbilitySystemComponent*, ASC);
+
 UCLASS()
 class NARA_API ANaraPlayerCharacter : public ANaraCharacterBase
 {
@@ -22,6 +24,9 @@ public:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
 	UCameraComponent* FollowCamera;
+
+	UPROPERTY()
+	FOnPlayerInitAbilityActorInfo OnPlayerInitAbilityActorInfo;
 
 public:
 	ANaraPlayerCharacter();

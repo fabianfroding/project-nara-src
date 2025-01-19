@@ -71,4 +71,5 @@ void ANaraPlayerCharacter::InitAbilityActorInfo()
 	}
 
 	InitializeDefaultAttributes();
+	OnPlayerInitAbilityActorInfo.Broadcast(AbilitySystemComponent);
 }
