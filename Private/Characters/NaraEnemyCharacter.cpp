@@ -7,9 +7,9 @@
 #include "BehaviorTree/BlackboardComponent.h"
 #include "Core/NaraCombatManager.h"
 #include "Core/NaraGameplayTags.h"
+#include "GameFramework/CharacterMovementComponent.h"
 #include "GAS/NaraAbilitySystemComponent.h"
 #include "GAS/NaraAttributeSet.h"
-#include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "NiagaraFunctionLibrary.h"
 
@@ -23,8 +23,6 @@ ANaraEnemyCharacter::ANaraEnemyCharacter()
 	bUseControllerRotationYaw = false;
 
 	GetCharacterMovement()->bUseControllerDesiredRotation = true;
-
-	BaseWalkSpeed = 125.f;
 
 	if (!EnemyDeathTag.IsValid())
 		EnemyDeathTag = FNaraGameplayTags::Get().CombatEvent_EnemyDeath;
@@ -48,7 +46,6 @@ void ANaraEnemyCharacter::PossessedBy(AController* NewController)
 void ANaraEnemyCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-	GetCharacterMovement()->MaxWalkSpeed = BaseWalkSpeed;
 	InitAbilityActorInfo();
 	GiveStartupAbilities();
 
@@ -115,7 +112,6 @@ void ANaraEnemyCharacter::GiveStartupAbilities()
 void ANaraEnemyCharacter::HitReactTagChanged(const FGameplayTag CallbackTag, int32 NewCount)
 {
 	bHitReacting = NewCount > 0;
-	GetCharacterMovement()->MaxWalkSpeed = bHitReacting ? 0.f : BaseWalkSpeed;
 	if (NaraAIController && NaraAIController->GetBlackboardComponent())
 	{
 		NaraAIController->GetBlackboardComponent()->SetValueAsBool(FName("HitReacting"), bHitReacting);
@@ -124,7 +120,7 @@ void ANaraEnemyCharacter::HitReactTagChanged(const FGameplayTag CallbackTag, int
 
 void ANaraEnemyCharacter::Die()
 {
-	SetLifeSpan(DeathLifeSpan); // TODO: On lifespan expire, create poof effect to make the enemy disappear.
+	SetLifeSpan(DeathLifeSpan);
 	
 	if (NaraAIController)
 		NaraAIController->GetBlackboardComponent()->SetValueAsBool(FName("Dead"), true);
