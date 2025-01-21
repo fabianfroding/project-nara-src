@@ -22,8 +22,6 @@ enum class E_NaraAIState : uint8
 	E_Chase		UMETA(DisplayName = "Chase")
 };
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnAttributeChangedSignature, float, NewValue); // TODO: Temp fix. This doesn't belong in enemy character.
-
 UCLASS()
 class NARA_API ANaraEnemyCharacter : public ANaraCharacterBase, public IEnemyInterface
 {
@@ -63,9 +61,6 @@ protected:
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TArray<FVector> PatrolLocations;
-
-	UPROPERTY(BlueprintAssignable)
-	FOnAttributeChangedSignature OnHealthChanged;
 
 	UPROPERTY(BlueprintReadOnly)
 	bool bHitReacting = false;

@@ -49,23 +49,8 @@ void ANaraEnemyCharacter::BeginPlay()
 	InitAbilityActorInfo();
 	GiveStartupAbilities();
 
-	UNaraAttributeSet* NaraAS = CastChecked<UNaraAttributeSet>(AttributeSet);
-	if (NaraAS)
-	{
-		// NOTE: For some reason we can't use FOnAttributeChangeData in header files, 
-		// so we need to use a lambda here in the .cpp instead of defining and using a function in the header file.
-		AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(NaraAS->GetHealthAttribute()).AddLambda(
-			[this](const FOnAttributeChangeData& Data)
-			{
-				OnHealthChanged.Broadcast(Data.NewValue);
-			}
-		);
-
-		AbilitySystemComponent->RegisterGameplayTagEvent(FNaraGameplayTags::Get().Effects_HitReact, EGameplayTagEventType::NewOrRemoved).AddUObject(
-			this, &ANaraEnemyCharacter::HitReactTagChanged);
-		
-		OnHealthChanged.Broadcast(NaraAS->GetHealth());
-	}
+	AbilitySystemComponent->RegisterGameplayTagEvent(FNaraGameplayTags::Get().Effects_HitReact, EGameplayTagEventType::NewOrRemoved).AddUObject(
+		this, &ANaraEnemyCharacter::HitReactTagChanged);
 
 	UNaraCombatManager::Get()->RegisterEnemy(this);
 }
