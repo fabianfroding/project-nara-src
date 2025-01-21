@@ -40,11 +40,8 @@ ANaraPlayerCharacter::ANaraPlayerCharacter()
 
 bool ANaraPlayerCharacter::IsDead_Implementation() const
 {
-	// TODO: This isnt working...
 	if (UNaraAttributeSet* NaraAS = Cast<UNaraAttributeSet>(GetPlayerState<ANaraPlayerState>()->GetAttributeSet()))
-	{
 		return NaraAS->GetHealth() <= 0;
-	}
 	return false;
 }
 
