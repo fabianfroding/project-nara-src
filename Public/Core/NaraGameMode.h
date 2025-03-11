@@ -32,6 +32,10 @@ protected:
 	virtual void BeginPlay() override;
 
 public:
+	virtual AActor* ChoosePlayerStart_Implementation(AController* Player) override;
+
+
+
 	static void DeleteSaveSlot(const FString& SlotName, int32 SlotIndex);
 
 	// Call this from the main menu when a new game is created.
