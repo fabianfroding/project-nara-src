@@ -26,6 +26,9 @@ protected:
 	TSoftObjectPtr<UWorld> DefaultMap;
 
 	UPROPERTY(EditDefaultsOnly)
+	FName DefaultPlayerStartTag;
+
+	UPROPERTY(EditDefaultsOnly)
 	TMap<FString, TSoftObjectPtr<UWorld>> Maps;
 
 protected:
@@ -33,8 +36,6 @@ protected:
 
 public:
 	virtual AActor* ChoosePlayerStart_Implementation(AController* Player) override;
-
-
 
 	static void DeleteSaveSlot(const FString& SlotName, int32 SlotIndex);
 

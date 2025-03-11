@@ -2,6 +2,7 @@
 
 #include "Core/NaraGameMode.h"
 
+#include "Core/NaraGameInstance.h"
 #include "Core/NaraSaveGame.h"
 #include "GameFramework/PlayerStart.h"
 #include "Kismet/GameplayStatics.h"
@@ -14,6 +15,8 @@ void ANaraGameMode::BeginPlay()
 
 AActor* ANaraGameMode::ChoosePlayerStart_Implementation(AController* Player)
 {
+	UNaraGameInstance* NaraGameInstance = Cast<UNaraGameInstance>(GetGameInstance());
+
 	TArray<AActor*> Actors;
 	UGameplayStatics::GetAllActorsOfClass(GetWorld(), APlayerStart::StaticClass(), Actors); // TODO: Can be registered in an array to avoid uising get all actors.
 	if (!Actors.IsEmpty())
@@ -23,7 +26,7 @@ AActor* ANaraGameMode::ChoosePlayerStart_Implementation(AController* Player)
 		{
 			if (APlayerStart* PlayerStart = Cast<APlayerStart>(Actor))
 			{
-				if (PlayerStart->PlayerStartTag == FName("TheTag"))
+				if (PlayerStart->PlayerStartTag == FName(NaraGameInstance->PlayerStartTag))
 				{
 					SelectedActor = PlayerStart;
 					break;
