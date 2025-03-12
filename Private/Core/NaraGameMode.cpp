@@ -72,6 +72,25 @@ UNaraSaveGame* ANaraGameMode::GetSaveSlotData(const FString& SlotName, int32 Slo
 	return NaraSaveGame;
 }
 
+UNaraSaveGame* ANaraGameMode::RetrieveInGameSaveData()
+{
+	UNaraGameInstance* NaraGameInstance = Cast<UNaraGameInstance>(GetGameInstance());
+	const FString InGameLoadSlotName = NaraGameInstance->LoadSlotName;
+	const int32 InGameLoadSlotIndex = NaraGameInstance->LoadSlotIndex;
+	return GetSaveSlotData(InGameLoadSlotName, InGameLoadSlotIndex);
+}
+
+void ANaraGameMode::SaveInGameProgressData(UNaraSaveGame* SaveObject)
+{
+	UNaraGameInstance* NaraGameInstance = Cast<UNaraGameInstance>(GetGameInstance());
+
+	const FString InGameLoadSlotName = NaraGameInstance->LoadSlotName;
+	const int32 InGameLoadSlotIndex = NaraGameInstance->LoadSlotIndex;
+	NaraGameInstance->PlayerStartTag = SaveObject->PlayerStartTag;
+
+	UGameplayStatics::SaveGameToSlot(SaveObject, InGameLoadSlotName, InGameLoadSlotIndex);
+}
+
 void ANaraGameMode::TravelToMap(const FString MapName)
 {
 	UGameplayStatics::OpenLevelBySoftObjectPtr(this, Maps.FindChecked(MapName));

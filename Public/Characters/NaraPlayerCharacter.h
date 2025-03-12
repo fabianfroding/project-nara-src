@@ -34,6 +34,8 @@ public:
 	FORCEINLINE class USpringArmComponent* GetCameraBoom() const { return CameraBoom; }
 	FORCEINLINE class UCameraComponent* GetFollowCamera() const { return FollowCamera; }
 
+	void SaveProgress(const FName& CheckpointTag);
+
 	/* Combat Interface Functions */
 	virtual void Die() override { OnPlayerDie(); }
 	virtual bool IsDead_Implementation() const override;

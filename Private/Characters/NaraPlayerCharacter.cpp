@@ -5,10 +5,13 @@
 #include "AbilitySystemComponent.h"
 #include "Camera/CameraComponent.h"
 #include "Core/NaraGameplayTags.h"
+#include "Core/NaraGameMode.h"
+#include "Core/NaraSaveGame.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "GAS/NaraAbilitySystemComponent.h"
 #include "GAS/NaraAttributeSet.h"
+#include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetSystemLibrary.h"
 #include "Player/NaraPlayerController.h"
 #include "Player/NaraPlayerState.h"
@@ -36,6 +39,20 @@ ANaraPlayerCharacter::ANaraPlayerCharacter()
 	FollowCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("FollowCamera"));
 	FollowCamera->SetupAttachment(CameraBoom, USpringArmComponent::SocketName); // Attach the camera to the end of the boom and let the boom adjust to match the controller orientation
 	FollowCamera->bUsePawnControlRotation = false; // Camera does not rotate relative to arm
+}
+
+void ANaraPlayerCharacter::SaveProgress(const FName& CheckpointTag)
+{
+	ANaraGameMode* NaraGameMode = Cast<ANaraGameMode>(UGameplayStatics::GetGameMode(this));
+	if (NaraGameMode)
+	{
+		UNaraSaveGame* SaveData = NaraGameMode->RetrieveInGameSaveData();
+		if (SaveData == nullptr) return;
+
+		SaveData->PlayerStartTag = CheckpointTag;
+
+		NaraGameMode->SaveInGameProgressData(SaveData);
+	}
 }
 
 bool ANaraPlayerCharacter::IsDead_Implementation() const

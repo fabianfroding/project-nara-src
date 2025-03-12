@@ -44,6 +44,9 @@ public:
 
 	UNaraSaveGame* GetSaveSlotData(const FString& SlotName, int32 SlotIndex) const;
 
+	UNaraSaveGame* RetrieveInGameSaveData();
+	void SaveInGameProgressData(UNaraSaveGame* SaveObject);
+
 	void TravelToMap(const FString MapName);
 
 };
