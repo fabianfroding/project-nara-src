@@ -9,6 +9,7 @@
 
 class UCameraComponent;
 class UGameplayAbility;
+class UGameplayEffect;
 class USpringArmComponent;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnPlayerInitAbilityActorInfo, UAbilitySystemComponent*, ASC);
@@ -25,16 +26,22 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
 	UCameraComponent* FollowCamera;
 
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<UGameplayEffect> DefaultsAttributesSetByCaller;
+
 	UPROPERTY()
 	FOnPlayerInitAbilityActorInfo OnPlayerInitAbilityActorInfo;
 
 public:
 	ANaraPlayerCharacter();
 
+	virtual void AddCharacterAbilities() override;
+
 	FORCEINLINE class USpringArmComponent* GetCameraBoom() const { return CameraBoom; }
 	FORCEINLINE class UCameraComponent* GetFollowCamera() const { return FollowCamera; }
 
 	void SaveProgress(const FName& CheckpointTag);
+	void LoadProgress();
 
 	/* Combat Interface Functions */
 	virtual void Die() override { OnPlayerDie(); }

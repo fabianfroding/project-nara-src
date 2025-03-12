@@ -13,6 +13,7 @@
 #include "GAS/NaraAttributeSet.h"
 #include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetSystemLibrary.h"
+#include "Libraries/NaraAbilitySystemLibrary.h"
 #include "Player/NaraPlayerController.h"
 #include "Player/NaraPlayerState.h"
 #include "UI/NaraGameHUD.h"
@@ -41,6 +42,11 @@ ANaraPlayerCharacter::ANaraPlayerCharacter()
 	FollowCamera->bUsePawnControlRotation = false; // Camera does not rotate relative to arm
 }
 
+void ANaraPlayerCharacter::AddCharacterAbilities()
+{
+	// TODO: Load in abilities form disk.
+}
+
 void ANaraPlayerCharacter::SaveProgress(const FName& CheckpointTag)
 {
 	ANaraGameMode* NaraGameMode = Cast<ANaraGameMode>(UGameplayStatics::GetGameMode(this));
@@ -51,7 +57,32 @@ void ANaraPlayerCharacter::SaveProgress(const FName& CheckpointTag)
 
 		SaveData->PlayerStartTag = CheckpointTag;
 
+		SaveData->PlayerHealth = UNaraAttributeSet::GetHealthAttribute().GetNumericValue(GetAttributeSet());
+		SaveData->PlayerMaxHealth = UNaraAttributeSet::GetMaxHealthAttribute().GetNumericValue(GetAttributeSet());
+
+		SaveData->bFirstTimeLoadIn = false;
 		NaraGameMode->SaveInGameProgressData(SaveData);
+	}
+}
+
+void ANaraPlayerCharacter::LoadProgress()
+{
+	ANaraGameMode* NaraGameMode = Cast<ANaraGameMode>(UGameplayStatics::GetGameMode(this));
+	if (NaraGameMode)
+	{
+		UNaraSaveGame* SaveData = NaraGameMode->RetrieveInGameSaveData();
+		if (SaveData == nullptr) return;
+
+		if (SaveData->bFirstTimeLoadIn)
+		{
+			InitAbilityActorInfo();
+			AddCharacterAbilities();
+		}
+		else
+		{
+			//TODO: Load in Abilities from disk
+			UNaraAbilitySystemLibrary::InitializeDefaultAttributesFromSaveData(this, AbilitySystemComponent, SaveData);
+		}
 	}
 }
 
@@ -84,6 +115,8 @@ void ANaraPlayerCharacter::InitAbilityActorInfo()
 		}
 	}
 
-	InitializeDefaultAttributes();
+	//InitializeDefaultAttributes();
+	LoadProgress();
+
 	OnPlayerInitAbilityActorInfo.Broadcast(AbilitySystemComponent);
 }
