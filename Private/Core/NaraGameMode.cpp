@@ -18,7 +18,7 @@ AActor* ANaraGameMode::ChoosePlayerStart_Implementation(AController* Player)
 	UNaraGameInstance* NaraGameInstance = Cast<UNaraGameInstance>(GetGameInstance());
 
 	TArray<AActor*> Actors;
-	UGameplayStatics::GetAllActorsOfClass(GetWorld(), APlayerStart::StaticClass(), Actors); // TODO: Can be registered in an array to avoid uising get all actors.
+	UGameplayStatics::GetAllActorsOfClass(GetWorld(), APlayerStart::StaticClass(), Actors); // TODO: Can be registered in an array to avoid using get all actors.
 	if (!Actors.IsEmpty())
 	{
 		AActor* SelectedActor = Actors[0];
@@ -54,6 +54,7 @@ void ANaraGameMode::SaveSlotData(const FString SlotName, const int32 SlotIndex)
 	UNaraSaveGame* NaraSaveGame = Cast<UNaraSaveGame>(SaveGameObject);
 	NaraSaveGame->bSlotOccupied = true;
 	//NaraSaveGame->MapName = LoadSlot->GetMapName();
+	//NaraSaveGame->PlayerStartTag = LoadSlot->PlayerStartTag;
 
 	UGameplayStatics::SaveGameToSlot(NaraSaveGame, SlotName, SlotIndex);
 }
