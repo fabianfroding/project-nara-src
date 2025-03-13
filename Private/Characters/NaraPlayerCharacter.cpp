@@ -100,9 +100,9 @@ void ANaraPlayerCharacter::LoadProgress()
 		}
 		else
 		{
-			if (UNaraAbilitySystemComponent* AuraASC = Cast<UNaraAbilitySystemComponent>(AbilitySystemComponent))
+			if (UNaraAbilitySystemComponent* NaraASC = Cast<UNaraAbilitySystemComponent>(AbilitySystemComponent))
 			{
-				AuraASC->AddCharacterAbilitiesFromSaveData(SaveData);
+				NaraASC->AddCharacterAbilitiesFromSaveData(SaveData);
 			}
 			UNaraAbilitySystemLibrary::InitializeDefaultAttributesFromSaveData(this, AbilitySystemComponent, SaveData);
 		}
