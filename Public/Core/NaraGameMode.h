@@ -47,6 +47,8 @@ public:
 	UNaraSaveGame* RetrieveInGameSaveData();
 	void SaveInGameProgressData(UNaraSaveGame* SaveObject);
 
+	void SaveWorldState(UWorld* World);
+
 	void TravelToMap(const FString MapName);
 
 };
