@@ -94,15 +94,15 @@ void ANaraGameMode::SaveInGameProgressData(UNaraSaveGame* SaveObject)
 	UGameplayStatics::SaveGameToSlot(SaveObject, InGameLoadSlotName, InGameLoadSlotIndex);
 }
 
-void ANaraGameMode::SaveWorldState(UWorld* World)
+void ANaraGameMode::SaveWorldState(UWorld* World) const
 {
 	FString WorldName = World->GetMapName();
 	WorldName.RemoveFromStart(World->StreamingLevelsPrefix);
 
-	UNaraGameInstance* AuraGI = Cast<UNaraGameInstance>(GetGameInstance());
-	check(AuraGI);
+	UNaraGameInstance* NaraGI = Cast<UNaraGameInstance>(GetGameInstance());
+	check(NaraGI);
 
-	if (UNaraSaveGame* SaveGame = GetSaveSlotData(AuraGI->LoadSlotName, AuraGI->LoadSlotIndex))
+	if (UNaraSaveGame* SaveGame = GetSaveSlotData(NaraGI->LoadSlotName, NaraGI->LoadSlotIndex))
 	{
 		if (!SaveGame->HasMap(WorldName))
 		{
@@ -142,7 +142,52 @@ void ANaraGameMode::SaveWorldState(UWorld* World)
 				MapToReplace = SavedMap;
 			}
 		}
-		UGameplayStatics::SaveGameToSlot(SaveGame, AuraGI->LoadSlotName, AuraGI->LoadSlotIndex);
+		UGameplayStatics::SaveGameToSlot(SaveGame, NaraGI->LoadSlotName, NaraGI->LoadSlotIndex);
+	}
+}
+
+void ANaraGameMode::LoadWorldState(UWorld* World) const
+{
+	FString WorldName = World->GetMapName();
+	WorldName.RemoveFromStart(World->StreamingLevelsPrefix);
+
+	UNaraGameInstance* NaraGI = Cast<UNaraGameInstance>(GetGameInstance());
+	check(NaraGI);
+
+	if (UGameplayStatics::DoesSaveGameExist(NaraGI->LoadSlotName, NaraGI->LoadSlotIndex))
+	{
+
+		UNaraSaveGame* SaveGame = Cast<UNaraSaveGame>(UGameplayStatics::LoadGameFromSlot(NaraGI->LoadSlotName, NaraGI->LoadSlotIndex));
+		if (SaveGame == nullptr)
+		{
+			return;
+		}
+
+		for (FActorIterator It(World); It; ++It)
+		{
+			AActor* Actor = *It;
+
+			if (!Actor->Implements<USaveInterface>()) continue;
+
+			for (FSavedActor SavedActor : SaveGame->GetSavedMapWithMapName(WorldName).SavedActors)
+			{
+				if (SavedActor.ActorName == Actor->GetFName())
+				{
+					if (ISaveInterface::Execute_ShouldLoadTransform(Actor))
+					{
+						Actor->SetActorTransform(SavedActor.Transform);
+					}
+
+					FMemoryReader MemoryReader(SavedActor.Bytes);
+
+					FObjectAndNameAsStringProxyArchive Archive(MemoryReader, true);
+					Archive.ArIsSaveGame = true;
+					Actor->Serialize(Archive); // converts binary bytes back into variables
+
+					ISaveInterface::Execute_LoadActor(Actor);
+				}
+			}
+		}
 	}
 }
 

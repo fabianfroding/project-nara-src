@@ -141,5 +141,10 @@ void ANaraPlayerCharacter::InitAbilityActorInfo()
 	//InitializeDefaultAttributes();
 	LoadProgress();
 
+	if (ANaraGameMode* NaraGameMode = Cast<ANaraGameMode>(UGameplayStatics::GetGameMode(this)))
+	{
+		NaraGameMode->LoadWorldState(GetWorld());
+	}
+
 	OnPlayerInitAbilityActorInfo.Broadcast(AbilitySystemComponent);
 }
