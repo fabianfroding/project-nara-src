@@ -61,6 +61,26 @@ void ANaraPlayerCharacter::SaveProgress(const FName& CheckpointTag)
 		SaveData->PlayerMaxHealth = UNaraAttributeSet::GetMaxHealthAttribute().GetNumericValue(GetAttributeSet());
 
 		SaveData->bFirstTimeLoadIn = false;
+
+		if (!HasAuthority()) return;
+
+		UNaraAbilitySystemComponent* NaraASC = Cast<UNaraAbilitySystemComponent>(AbilitySystemComponent);
+		FForEachAbility SaveAbilityDelegate;
+		SaveData->SavedAbilities.Empty();
+		SaveAbilityDelegate.BindLambda([this, NaraASC, SaveData](const FGameplayAbilitySpec& AbilitySpec)
+			{
+				/*const FGameplayTag AbilityTag = NaraASC->GetAbilityTagFromSpec(AbilitySpec);
+				UAbilityInfo* AbilityInfo = UNaraAbilitySystemLibrary::GetAbilityInfo(this);
+				FNaraAbilityInfo Info = AbilityInfo->FindAbilityInfoForTag(AbilityTag);
+
+				FSavedAbility SavedAbility;
+				SavedAbility.GameplayAbility = Info.Ability;
+				SavedAbility.AbilityTag = AbilityTag;
+
+				SaveData->SavedAbilities.AddUnique(SavedAbility);*/
+			});
+		NaraASC->ForEachAbility(SaveAbilityDelegate);
+
 		NaraGameMode->SaveInGameProgressData(SaveData);
 	}
 }
@@ -80,7 +100,10 @@ void ANaraPlayerCharacter::LoadProgress()
 		}
 		else
 		{
-			//TODO: Load in Abilities from disk
+			if (UNaraAbilitySystemComponent* AuraASC = Cast<UNaraAbilitySystemComponent>(AbilitySystemComponent))
+			{
+				AuraASC->AddCharacterAbilitiesFromSaveData(SaveData);
+			}
 			UNaraAbilitySystemLibrary::InitializeDefaultAttributesFromSaveData(this, AbilitySystemComponent, SaveData);
 		}
 	}
