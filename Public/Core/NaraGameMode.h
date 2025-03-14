@@ -35,6 +35,8 @@ protected:
 	virtual void BeginPlay() override;
 
 public:
+	FString GetMapNameFromMapAssetName(const FString& MapAssetName) const;
+
 	virtual AActor* ChoosePlayerStart_Implementation(AController* Player) override;
 
 	static void DeleteSaveSlot(const FString& SlotName, int32 SlotIndex);
@@ -47,7 +49,7 @@ public:
 	UNaraSaveGame* RetrieveInGameSaveData();
 	void SaveInGameProgressData(UNaraSaveGame* SaveObject);
 
-	void SaveWorldState(UWorld* World) const;
+	void SaveWorldState(UWorld* World, const FString& DestinationMapAssetName = FString("")) const;
 	void LoadWorldState(UWorld* World) const;
 
 	void TravelToMap(const FString MapName);

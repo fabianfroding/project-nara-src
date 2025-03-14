@@ -16,6 +16,18 @@ void ANaraGameMode::BeginPlay()
 	Maps.Add(DefaultMapName, DefaultMap);
 }
 
+FString ANaraGameMode::GetMapNameFromMapAssetName(const FString& MapAssetName) const
+{
+	for (auto& Map : Maps)
+	{
+		if (Map.Value.ToSoftObjectPath().GetAssetName() == MapAssetName)
+		{
+			return Map.Key;
+		}
+	}
+	return FString();
+}
+
 AActor* ANaraGameMode::ChoosePlayerStart_Implementation(AController* Player)
 {
 	UNaraGameInstance* NaraGameInstance = Cast<UNaraGameInstance>(GetGameInstance());
@@ -94,7 +106,7 @@ void ANaraGameMode::SaveInGameProgressData(UNaraSaveGame* SaveObject)
 	UGameplayStatics::SaveGameToSlot(SaveObject, InGameLoadSlotName, InGameLoadSlotIndex);
 }
 
-void ANaraGameMode::SaveWorldState(UWorld* World) const
+void ANaraGameMode::SaveWorldState(UWorld* World, const FString& DestinationMapAssetName) const
 {
 	FString WorldName = World->GetMapName();
 	WorldName.RemoveFromStart(World->StreamingLevelsPrefix);
@@ -104,6 +116,12 @@ void ANaraGameMode::SaveWorldState(UWorld* World) const
 
 	if (UNaraSaveGame* SaveGame = GetSaveSlotData(NaraGI->LoadSlotName, NaraGI->LoadSlotIndex))
 	{
+		if (DestinationMapAssetName != FString(""))
+		{
+			SaveGame->MapAssetName = DestinationMapAssetName;
+			SaveGame->MapName = GetMapNameFromMapAssetName(DestinationMapAssetName);
+		}
+
 		if (!SaveGame->HasMap(WorldName))
 		{
 			FSavedMap NewSavedMap;
