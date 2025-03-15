@@ -8,6 +8,7 @@
 #include "NaraGameMode.generated.h"
 
 class UNaraSaveGame;
+class ULootTiers;
 class USaveGame;
 
 UCLASS(minimalapi)
@@ -30,6 +31,10 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly)
 	TMap<FString, TSoftObjectPtr<UWorld>> Maps;
+
+public:
+	UPROPERTY(EditDefaultsOnly, Category = "Loot Tiers")
+	TObjectPtr<ULootTiers> LootTiers;
 
 protected:
 	virtual void BeginPlay() override;

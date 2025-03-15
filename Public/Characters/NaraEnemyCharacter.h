@@ -85,6 +85,9 @@ public:
 	virtual void SetCombatTarget_Implementation(AActor* InCombatTarget) override;
 	virtual AActor* GetCombatTarget_Implementation() const override;
 
+	UFUNCTION(BlueprintImplementableEvent)
+	void SpawnLoot();
+
 protected:
 	virtual void BeginPlay() override;
 

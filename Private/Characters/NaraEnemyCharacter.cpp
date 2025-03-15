@@ -112,6 +112,7 @@ void ANaraEnemyCharacter::Die()
 
 	UNaraCombatManager::Get()->EnemyDied(this, EnemyDeathTag);
 
+	SpawnLoot();
 	Super::Die();
 }
 
