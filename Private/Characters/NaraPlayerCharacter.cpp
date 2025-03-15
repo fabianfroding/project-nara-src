@@ -109,6 +109,24 @@ void ANaraPlayerCharacter::LoadProgress()
 	}
 }
 
+void ANaraPlayerCharacter::Die()
+{
+	Super::Die();
+
+	FTimerDelegate DeathTimerDelegate;
+	DeathTimerDelegate.BindLambda([this]()
+		{
+			ANaraGameMode* NaraGM = Cast<ANaraGameMode>(UGameplayStatics::GetGameMode(this));
+			if (NaraGM)
+			{
+				NaraGM->PlayerDied(this);
+			}
+		});
+	GetWorldTimerManager().SetTimer(DeathTimer, DeathTimerDelegate, DeathTime, false);
+	FollowCamera->DetachFromComponent(FDetachmentTransformRules::KeepWorldTransform);
+	OnPlayerDie();
+}
+
 bool ANaraPlayerCharacter::IsDead_Implementation() const
 {
 	if (UNaraAttributeSet* NaraAS = Cast<UNaraAttributeSet>(GetPlayerState<ANaraPlayerState>()->GetAttributeSet()))

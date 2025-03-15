@@ -39,6 +39,8 @@ public:
 
 	virtual AActor* ChoosePlayerStart_Implementation(AController* Player) override;
 
+	void PlayerDied(ACharacter* DeadCharacter);
+
 	static void DeleteSaveSlot(const FString& SlotName, int32 SlotIndex);
 
 	// Call this from the main menu when a new game is created.

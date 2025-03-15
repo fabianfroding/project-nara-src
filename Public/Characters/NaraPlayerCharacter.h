@@ -29,6 +29,11 @@ public:
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<UGameplayEffect> DefaultsAttributesSetByCaller;
 
+	UPROPERTY(EditDefaultsOnly)
+	float DeathTime = 5.f;
+
+	FTimerHandle DeathTimer;
+
 	UPROPERTY()
 	FOnPlayerInitAbilityActorInfo OnPlayerInitAbilityActorInfo;
 
@@ -44,7 +49,7 @@ public:
 	void LoadProgress();
 
 	/* Combat Interface Functions */
-	virtual void Die() override { OnPlayerDie(); }
+	virtual void Die() override;
 	virtual bool IsDead_Implementation() const override;
 	/* End Combat Interface Functions */
 

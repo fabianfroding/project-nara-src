@@ -6,6 +6,7 @@
 #include "Core/NaraSaveGame.h"
 #include "EngineUtils.h"
 #include "Interfaces/SaveInterface.h"
+#include "GameFramework/Character.h"
 #include "GameFramework/PlayerStart.h"
 #include "Kismet/GameplayStatics.h"
 #include "Serialization/ObjectAndNameAsStringProxyArchive.h"
@@ -53,6 +54,14 @@ AActor* ANaraGameMode::ChoosePlayerStart_Implementation(AController* Player)
 	return nullptr;
 }
 
+void ANaraGameMode::PlayerDied(ACharacter* DeadCharacter)
+{
+	UNaraSaveGame* SaveGame = RetrieveInGameSaveData();
+	if (!IsValid(SaveGame)) return;
+
+	UGameplayStatics::OpenLevel(DeadCharacter, FName(SaveGame->MapAssetName));
+}
+
 void ANaraGameMode::DeleteSaveSlot(const FString& SlotName, int32 SlotIndex)
 {
 	if (UGameplayStatics::DoesSaveGameExist(SlotName, SlotIndex))
@@ -68,6 +77,7 @@ void ANaraGameMode::SaveSlotData(const FString SlotName, const int32 SlotIndex)
 	
 	UNaraSaveGame* NaraSaveGame = Cast<UNaraSaveGame>(SaveGameObject);
 	NaraSaveGame->bSlotOccupied = true;
+	//NaraSaveGame->MapAssetName = LoadSlot->MapAssetName;
 	//NaraSaveGame->MapName = LoadSlot->GetMapName();
 	//NaraSaveGame->PlayerStartTag = LoadSlot->PlayerStartTag;
 
